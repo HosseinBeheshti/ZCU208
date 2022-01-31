@@ -40,7 +40,7 @@ module tx_core
      input dac_tready,
      output logic [2*16*NUMBER_OF_LINE-1:0] dac_tdata,
      output dac_tvalid,
-     output logic [2*16*NUMBER_OF_LINE-1:0] dbg_output_tdata
+     output logic [2*16*NUMBER_OF_LINE-1:0] dbg_output_data
    );
 
   genvar i;
@@ -120,7 +120,7 @@ module tx_core
       end
     end
   endgenerate
-  assign dbg_output_tdata = dac_tdata;
+  assign dbg_output_data = dac_tdata;
   assign dac_tvalid = 1;
 
 endmodule

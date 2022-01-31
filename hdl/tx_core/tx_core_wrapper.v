@@ -57,9 +57,9 @@ module tx_core_wrapper
             .adc3_tready(adc3_tready),
             .dds_phase_inc3(dds_phase_inc3),
             .output_select(dbg_select),
-            .output_tready(dac_tready),
-            .output_tdata(dac_tdata),
-            .output_tvalid(dac_tvalid),
+            .dac_tready(dac_tready),
+            .dac_tdata(dac_tdata),
+            .dac_tvalid(dac_tvalid),
             .dbg_output_data(dbg_output_data)
           );
 
