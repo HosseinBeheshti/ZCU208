@@ -2636,8 +2636,15 @@ set_property top design_1_wrapper [current_fileset]
 # H128B717------------------------------------------------------------------------
 # Create IPs in HDL modules
 # H128B717------------------------------------------------------------------------
-# 
-# 
+create_ip -name dds_compiler -vendor xilinx.com -library ip -version 6.0 -module_name dds_compiler_core
+set_property -dict [list CONFIG.Component_Name {dds_compiler_core} CONFIG.PartsPresent {SIN_COS_LUT_only} CONFIG.Parameter_Entry {Hardware_Parameters} CONFIG.Noise_Shaping {None} CONFIG.Phase_Width {16} CONFIG.Output_Width {16} CONFIG.Has_Phase_Out {false} CONFIG.DATA_Has_TLAST {Not_Required} CONFIG.S_PHASE_Has_TUSER {Not_Required} CONFIG.M_DATA_Has_TUSER {Not_Required} CONFIG.Latency {6} CONFIG.Output_Frequency1 {0} CONFIG.PINC1 {0}] [get_ips dds_compiler_core]
+generate_target {instantiation_template} [get_files ${origin_dir}/build/pl/${_xil_proj_name_}/${_xil_proj_name_}.srcs/sources_1/ip/dds_compiler_core/dds_compiler_core.xci]
+set_property generate_synth_checkpoint 0 [get_files dds_compiler_core.xci]
+
+create_ip -name cmpy -vendor xilinx.com -library ip -version 6.0 -module_name ddc_cmpy_core
+set_property -dict [list CONFIG.Component_Name {ddc_cmpy_core} CONFIG.APortWidth {14} CONFIG.OutputWidth {31}] [get_ips ddc_cmpy_core]
+generate_target {instantiation_template} [get_files ${origin_dir}/build/pl/${_xil_proj_name_}/${_xil_proj_name_}.srcs/sources_1/ip/ddc_cmpy_core/ddc_cmpy_core.xci]
+set_property generate_synth_checkpoint 0 [get_files ddc_cmpy_core.xci]
 # H128B717------------------------------------------------------------------------
 # End of cr_bd_design_1()
 cr_bd_design_1 ""
