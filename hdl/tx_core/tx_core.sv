@@ -37,9 +37,9 @@ module tx_core
      output adc3_tready,
      input [15:0] dds_phase_inc3,
      input [2:0] output_select,
-     input output_tready,
-     output logic [2*16*NUMBER_OF_LINE-1:0] output_tdata,
-     output output_tvalid,
+     input dac_tready,
+     output logic [2*16*NUMBER_OF_LINE-1:0] dac_tdata,
+     output dac_tvalid,
      output logic [2*16*NUMBER_OF_LINE-1:0] dbg_output_tdata
    );
 
@@ -115,12 +115,12 @@ module tx_core
     begin
       always @(posedge clock)
       begin
-        output_data[16*(2*i+1)-1:16*(2*i)] <= output_data_temp[16*(i+1)-1:16*i];
-        output_data[16*(2*i+2)-1:16*(2*i+1)]<= output_data_temp[16*(i+1)-1+128:16*i+128];
+        dac_tdata[16*(2*i+1)-1:16*(2*i)] <= output_data_temp[16*(i+1)-1:16*i];
+        dac_tdata[16*(2*i+2)-1:16*(2*i+1)]<= output_data_temp[16*(i+1)-1+128:16*i+128];
       end
     end
   endgenerate
-  assign dbg_output_tdata = output_tdata;
-  assign output_tvalid = 1;
+  assign dbg_output_tdata = dac_tdata;
+  assign dac_tvalid = 1;
 
 endmodule
