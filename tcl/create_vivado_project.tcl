@@ -345,7 +345,7 @@ proc create_hier_cell_rf_ss { parentCell nameHier } {
   current_bd_instance $hier_obj
 
   # Create interface pins
-  create_bd_intf_pin -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 PL_CLK
+  create_bd_intf_pin -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 pl_clk
 
   create_bd_intf_pin -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 adc0_clk
 
@@ -643,7 +643,7 @@ proc create_hier_cell_rf_ss { parentCell nameHier } {
  ] $usp_rf_data_converter_0
 
   # Create interface connections
-  connect_bd_intf_net -intf_net CLK_IN1_D_0_1 [get_bd_intf_pins PL_CLK] [get_bd_intf_pins adc_dac_clk_wiz/CLK_IN1_D]
+  connect_bd_intf_net -intf_net CLK_IN1_D_0_1 [get_bd_intf_pins pl_clk] [get_bd_intf_pins adc_dac_clk_wiz/CLK_IN1_D]
   connect_bd_intf_net -intf_net adc0_clk_1 [get_bd_intf_pins adc0_clk] [get_bd_intf_pins usp_rf_data_converter_0/adc0_clk]
   connect_bd_intf_net -intf_net adc1_clk_1 [get_bd_intf_pins adc1_clk] [get_bd_intf_pins usp_rf_data_converter_0/adc1_clk]
   connect_bd_intf_net -intf_net adc2_clk_1 [get_bd_intf_pins adc2_clk] [get_bd_intf_pins usp_rf_data_converter_0/adc2_clk]
@@ -705,7 +705,7 @@ preplace port vout02 -pg 1 -lvl 5 -x 1230 -y 320 -defaultsOSRD
 preplace port vout10 -pg 1 -lvl 5 -x 1230 -y 630 -defaultsOSRD
 preplace port vout12 -pg 1 -lvl 5 -x 1230 -y 650 -defaultsOSRD
 preplace port sysref_in -pg 1 -lvl 0 -x -160 -y 440 -defaultsOSRD
-preplace port PL_CLK -pg 1 -lvl 0 -x -160 -y 900 -defaultsOSRD
+preplace port pl_clk -pg 1 -lvl 0 -x -160 -y 900 -defaultsOSRD
 preplace port port-id_s_axi_aclk -pg 1 -lvl 0 -x -160 -y 460 -defaultsOSRD
 preplace port port-id_s_axi_aresetn -pg 1 -lvl 0 -x -160 -y 480 -defaultsOSRD
 preplace port port-id_irq -pg 1 -lvl 5 -x 1230 -y 610 -defaultsOSRD
@@ -2438,10 +2438,10 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
   # Create interface ports
   set CLK_SYNC [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:gpio_rtl:1.0 CLK_SYNC ]
 
-  set PL_CLK [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 PL_CLK ]
+  set pl_clk [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 pl_clk ]
   set_property -dict [ list \
    CONFIG.FREQ_HZ {500000000} \
-   ] $PL_CLK
+   ] $pl_clk
 
   set adc0_clk [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 adc0_clk ]
   set_property -dict [ list \
@@ -2517,7 +2517,7 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
   create_hier_cell_rf_ss [current_bd_instance .] rf_ss
 
   # Create interface connections
-  connect_bd_intf_net -intf_net CLK_IN1_D_0_1 [get_bd_intf_ports PL_CLK] [get_bd_intf_pins rf_ss/PL_CLK]
+  connect_bd_intf_net -intf_net CLK_IN1_D_0_1 [get_bd_intf_ports pl_clk] [get_bd_intf_pins rf_ss/pl_clk]
   connect_bd_intf_net -intf_net adc0_clk_1 [get_bd_intf_ports adc0_clk] [get_bd_intf_pins rf_ss/adc0_clk]
   connect_bd_intf_net -intf_net adc1_clk_1 [get_bd_intf_ports adc1_clk] [get_bd_intf_pins rf_ss/adc1_clk]
   connect_bd_intf_net -intf_net adc2_clk_1 [get_bd_intf_ports adc2_clk] [get_bd_intf_pins rf_ss/adc2_clk]
@@ -2564,7 +2564,7 @@ Port;FD4A0000;FD4AFFFF;1|FPD;DPDMA;FD4C0000;FD4CFFFF;1|FPD;DDR_XMPU5_CFG;FD05000
 #  -string -flagsOSRD
 preplace port clk104_clk_spi_mux_sel -pg 1 -lvl 3 -x 740 -y 220 -defaultsOSRD
 preplace port CLK_SYNC -pg 1 -lvl 3 -x 740 -y 80 -defaultsOSRD
-preplace port PL_CLK -pg 1 -lvl 0 -x -10 -y 620 -defaultsOSRD
+preplace port pl_clk -pg 1 -lvl 0 -x -10 -y 620 -defaultsOSRD
 preplace port sysref_in -pg 1 -lvl 0 -x -10 -y 600 -defaultsOSRD
 preplace port adc0_clk -pg 1 -lvl 0 -x -10 -y 160 -defaultsOSRD
 preplace port vin0_01 -pg 1 -lvl 0 -x -10 -y 460 -defaultsOSRD
