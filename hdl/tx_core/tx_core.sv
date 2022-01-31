@@ -24,95 +24,103 @@ module tx_core
    (
      input clock,
      input resetn,
-     input bypass_enable,
-     input [127:0] adc_data,
-     input [15:0] dds_phase_inc,
-     input [7:0] output_gain,
-     output logic [127:0] output_data,
-     // debug probes
-     output [15:0] dbg_dds_sin,
-     output [15:0] dbg_dds_cosin,
-     output [61:0] dbg_cm_data,
-     output [47:0] dbg_output_data
+     input adc1_tvalid,
+     input [16*NUMBER_OF_LINE-1:0] adc1_tdata,
+     output adc1_tready,
+     input [15:0] dds_phase_inc1,
+     input adc2_tvalid,
+     input [16*NUMBER_OF_LINE-1:0] adc2_tdata,
+     output adc2_tready,
+     input [15:0] dds_phase_inc2,
+     input adc3_tvalid,
+     input [16*NUMBER_OF_LINE-1:0] adc3_tdata,
+     output adc3_tready,
+     input [15:0] dds_phase_inc3,
+     input [2:0] output_select,
+     input output_tready,
+     output logic [2*16*NUMBER_OF_LINE-1:0] output_tdata,
+     output output_tvalid,
+     output logic [2*16*NUMBER_OF_LINE-1:0] dbg_output_tdata
    );
 
   genvar i;
-  logic [13:0] adc_data_array[NUMBER_OF_LINE];
-  logic [15:0] phase_acc_value = 0;
-  logic [31:0] dds_data_array[NUMBER_OF_LINE];
-  logic dds_data_valid_array[NUMBER_OF_LINE];
-  logic [15:0] dds_sin_array[NUMBER_OF_LINE];
-  logic [15:0] dds_cosin_array[NUMBER_OF_LINE];
-  logic [31:0] cm_dds_data[NUMBER_OF_LINE];
-  logic cm_data_valid_array[NUMBER_OF_LINE];
-  logic [63:0] cm_data_array[NUMBER_OF_LINE];
-  logic [47:0] cm_output_data_array[NUMBER_OF_LINE];
+  logic [13:0] adc1_data_array[NUMBER_OF_LINE];
+  logic [16*NUMBER_OF_LINE-1:0] adc1_data_i_shift;
+  logic [16*NUMBER_OF_LINE-1:0] adc1_data_q_shift;
+  logic [16*NUMBER_OF_LINE-1:0] adc2_data_i_shift;
+  logic [16*NUMBER_OF_LINE-1:0] adc2_data_q_shift;
+  logic [16*NUMBER_OF_LINE-1:0] adc3_data_i_shift;
+  logic [16*NUMBER_OF_LINE-1:0] adc3_data_q_shift;
+  logic [2*16*NUMBER_OF_LINE-1:0] output_data_temp;
 
   // rearrange input adc signal
-  generate
-    for (i = 0; i < NUMBER_OF_LINE; i = i + 1)
-    begin
-      always @(posedge clock)
-      begin
-        adc_data_array[i] <= adc_data[16*(i+1)-1:16*i+1];
-      end
-    end
-  endgenerate
+  assign adc1_tready = 1;
+  assign adc2_tready = 1;
+  assign adc3_tready = 1;
 
-  // generate NUMBER_OF_LINE-line 4GSPS DDS signal
+  iq_freq_shift
+    #(NUMBER_OF_LINE)
+    iq_freq_shift_inst1
+    (
+      .clock(clock),
+      .resetn(adc1_tvalid && resetn),
+      .data_in_i(adc1_tdata),
+      .data_in_q(),
+      .dds_phase_inc(dds_phase_inc1),
+      .data_out_i(adc1_data_i_shift),
+      .data_out_q(adc1_data_q_shift)
+    );
+
+  iq_freq_shift
+    #(NUMBER_OF_LINE)
+    iq_freq_shift_inst2
+    (
+      .clock(clock),
+      .resetn(adc3_tvalid && resetn),
+      .data_in_i(adc2_tdata),
+      .data_in_q(),
+      .dds_phase_inc(dds_phase_inc2),
+      .data_out_i(adc2_data_i_shift),
+      .data_out_q(adc2_data_q_shift)
+    );
+
+  iq_freq_shift
+    #(NUMBER_OF_LINE)
+    iq_freq_shift_inst3
+    (
+      .clock(clock),
+      .resetn(adc3_tvalid && resetn),
+      .data_in_i(adc3_tdata),
+      .data_in_q(),
+      .dds_phase_inc(dds_phase_inc3),
+      .data_out_i(adc3_data_i_shift),
+      .data_out_q(adc3_data_q_shift)
+    );
+
   always @(posedge clock)
   begin
-    phase_acc_value <= phase_acc_value + dds_phase_inc;
+    case (output_select)
+      1:
+        output_data_temp <= {adc1_data_q_shift,adc1_data_i_shift};
+      2:
+        output_data_temp <= {adc2_data_q_shift,adc2_data_i_shift};
+      3:
+        output_data_temp <= {adc3_data_q_shift,adc3_data_i_shift};
+      default:
+        output_data_temp <= {adc1_data_q_shift,adc1_data_i_shift};
+    endcase
   end
   generate
     for (i = 0; i < NUMBER_OF_LINE; i = i + 1)
     begin
-      dds_compiler_core	dds_compiler_core_inst
-                        (
-                          .aclk(clock),
-                          .s_axis_phase_tvalid(resetn),
-                          .s_axis_phase_tdata(phase_acc_value + i*dds_phase_inc),
-                          .m_axis_data_tvalid(dds_data_valid_array[i]),
-                          .m_axis_data_tdata(dds_data_array[i])
-                        );
       always @(posedge clock)
       begin
-        dds_sin_array[i] <= dds_data_array[i][15:0];
-        dds_cosin_array[i] <= dds_data_array[i][31:16];
-      end
-      assign cm_dds_data[i] = bypass_enable ? {16'd0, 16'd1} : {dds_sin_array[i],dds_cosin_array[i]};
-
-  // CM for NUMBER_OF_LINE  line
-      ddc_cmpy_core ddc_cmpy_core_inst
-                    (
-                      .aclk(clock),
-                      .s_axis_a_tvalid(resetn),
-                      .s_axis_a_tdata({14'd0,adc_data_array[i]}),
-                      .s_axis_b_tvalid(resetn),
-                      .s_axis_b_tdata(cm_dds_data[i]),
-                      .m_axis_dout_tvalid(cm_data_valid_array[i]),
-                      .m_axis_dout_tdata(cm_data_array[i])
-                    );
-      ddc_xbip_multadd ddc_xbip_multadd_inst(
-                         .CLK(clock),
-                         .CE(1),
-                         .SCLR(!resetn),
-                         .A(output_gain),
-                         .B(cm_data_array[i][30:16]),
-                         .C(cm_data_array[i][62:47]),
-                         .SUBTRACT(0),
-                         .P(cm_output_data_array[i]),
-                         .PCOUT()
-                       );
-      always @(posedge clock)
-      begin
-        output_data[16*(i+1)-1:16*i] <= {cm_output_data_array[i][13:0], 2'd0};
+        output_data[16*(2*i+1)-1:16*(2*i)] <= output_data_temp[16*(i+1)-1:16*i];
+        output_data[16*(2*i+2)-1:16*(2*i+1)]<= output_data_temp[16*(i+1)-1+128:16*i+128];
       end
     end
   endgenerate
-  assign dbg_dds_sin = dds_sin_array[0];
-  assign dbg_dds_cosin = dds_cosin_array[0];
-  assign dbg_cm_data = cm_data_array[0];
-  assign dbg_output_data = cm_output_data_array[0];
+  assign dbg_output_tdata = output_tdata;
+  assign output_tvalid = 1;
 
 endmodule
