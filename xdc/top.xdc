@@ -6,7 +6,7 @@ set_property PACKAGE_PIN B12 [get_ports {clk104_clk_spi_mux_sel_tri_o[1]}]
 ####################################################################################
 # Constraints from file : 'design_1_ddr4_0_0_board.xdc'
 ####################################################################################
-create_clock -period 2.000 -name CC_PL_CLK_clk -waveform {0.000 1.000} [get_ports {pl_clk_clk_p[0]}]
+create_clock -period 2.000 -name CC_PL_CLK_clk -waveform {0.000 1.000} [get_ports {pl_clk_p[0]}]
 
 # Max Delays from CC_PL_CLK_clk (400MHz) to clk_out1_design_1_clk_wiz_0_2 (500MHz)
 set_max_delay -datapath_only -from [get_pins -hierarchical -filter {NAME =~ "*user_sysref_adc*/C"}] -to [get_pins -hierarchical -filter {NAME =~ "*i_mts_sysref_count_adc/sysref_fbrc_ff*/D"}] 2.000
@@ -22,19 +22,19 @@ set_max_delay -datapath_only -from [get_pins -hierarchical -filter {NAME =~ "*us
 # Max Delays from CC_PL_CLK_clk (400MHz) to clk_out1_design_1_clk_wiz_0_2 (500MHz)
 set_max_delay -datapath_only -from [get_pins -hierarchical -filter {NAME =~ "*user_sysref_adc*/C"}] -to [get_cells -hierarchical -filter {IS_SEQUENTIAL == TRUE && NAME =~ "*ila_core_inst*"}] 2.000
 # Input Delay for PL SYSREF
-set_input_delay -clock [get_clocks CC_PL_CLK_clk] -min -add_delay 2.000 [get_ports pl_sysref_0_clk_p]
-set_input_delay -clock [get_clocks CC_PL_CLK_clk] -max -add_delay 2.031 [get_ports pl_sysref_0_clk_p]
+set_input_delay -clock [get_clocks CC_PL_CLK_clk] -min -add_delay 2.000 [get_ports pl_sysref_clk_p]
+set_input_delay -clock [get_clocks CC_PL_CLK_clk] -max -add_delay 2.031 [get_ports pl_sysref_clk_p]
 
 
 set_property IOSTANDARD LVCMOS12 [get_ports {clk104_clk_spi_mux_sel_tri_o[1]}]
 set_property IOSTANDARD LVCMOS12 [get_ports {clk104_clk_spi_mux_sel_tri_o[0]}]
 
-set_property IOSTANDARD LVDS_25 [get_ports pl_sysref_0_clk_p]
-set_property IOSTANDARD LVDS_25 [get_ports pl_sysref_0_clk_n]
-set_property PACKAGE_PIN B10 [get_ports pl_sysref_0_clk_p]
-set_property PACKAGE_PIN B8 [get_ports {pl_clk_clk_p[0]}]
-set_property IOSTANDARD LVDS_25 [get_ports {pl_clk_clk_p[0]}]
-set_property IOSTANDARD LVDS_25 [get_ports {pl_clk_clk_n[0]}]
+set_property IOSTANDARD LVDS_25 [get_ports pl_sysref_clk_p]
+set_property IOSTANDARD LVDS_25 [get_ports pl_sysref_clk_n]
+set_property PACKAGE_PIN B10 [get_ports pl_sysref_clk_p]
+set_property PACKAGE_PIN B8 [get_ports pl_clk_p]
+set_property IOSTANDARD LVDS_25 [get_ports pl_clk_p]
+set_property IOSTANDARD LVDS_25 [get_ports pl_clk_n]
 
 # Control clocking related to PL SYSREF
 set_property LOC BUFGCE_HDIO_X0Y2 [get_cells {design_1_i/util_ds_buf_1/U0/USE_BUFGCE.GEN_BUFGCE[0].BUFGCE_U}]
