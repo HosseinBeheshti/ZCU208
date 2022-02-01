@@ -25,8 +25,10 @@ module clock_signaling
     input pl_clk_n,
     input pl_clk_p,
     output master_clock,
-    output user_sysref_adc,
-    output user_sysref_dac
+    (* dont_touch="true" *)
+    output reg user_sysref_adc,
+    (* dont_touch="true" *)
+    output reg user_sysref_dac
   );
 
   wire pl_sysref_clk;
