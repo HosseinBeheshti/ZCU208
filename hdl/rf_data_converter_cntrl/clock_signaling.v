@@ -24,6 +24,8 @@ module clock_signaling
     input sysref_in_p,
     input pl_clk_n,
     input pl_clk_p,
+    (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 master_clock CLK" *)
+    (* X_INTERFACE_PARAMETER = "FREQ_HZ 500000000" *)
     output master_clock,
     (* dont_touch="true" *)
     output reg user_sysref_adc,
