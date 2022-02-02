@@ -13,7 +13,12 @@ webtalk*.jou
 webtalk*.log
 vitis_hls*.log
 webtalk*.str
+vitis*.str
 *runtime.txt
 *.slxc
 *.asv
 *.m~
+/rfd_clocking_nlv.log
+/rfd_us_nlv_ADC.log
+/rfd_us_nlv_DAC.log
+/xrc.log
