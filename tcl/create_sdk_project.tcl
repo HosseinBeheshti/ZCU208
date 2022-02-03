@@ -5,12 +5,12 @@ set core_cnt 8
 #-----------------------</EDIT HERE>----------------------- 
 #----------------------------------------------------------
 set origin_dir [file dirname [file dirname [info script]]]
-set prj_dir ${origin_dir}/build/apu/
+set prj_dir ${origin_dir}/build/ps/
 #----------------------------------------------------------
 cd ${origin_dir}
 
 # set the workspace
-setws ${origin_dir}/build/apu/
+setws ${origin_dir}/build/ps/
 #-----------------
 # create platform 
 #-----------------
