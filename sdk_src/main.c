@@ -19,7 +19,7 @@
 
 // Includes for user added CLI functions used in this file
 #include "rfdc_poweron_status.h"
-//#include "rfdc_cmd.h"
+#include "rfdc_cmd.h"
 #include "adc_FreezeCal.h"
 #include "rfdc_nyquistzone.h"
 #include "adc_LinkCoupling.h"
@@ -241,7 +241,11 @@ int main(void)
 	/////////////////////////////////////////////////////////////////////////////////
 	// Main Loop
 
-	rfdcShutdown(NULL);
+	while(1)
+	{
+		sleep(1);
+	}
+//	rfdcShutdown(NULL);
 	xil_printf("--- Application closed, have a good day! --- \r\n");
 
 
