@@ -8,10 +8,8 @@
 #ifndef ADCDISABLECALCOEFFOVRD_H_
 #define ADCDISABLECALCOEFFOVRD_H_
 
-
 /***************************** Include Files *********************************/
 #include "xil_types.h"
-
 
 /************************** Constant Definitions *****************************/
 
@@ -21,10 +19,7 @@
 
 /************************** Function Prototypes ******************************/
 
-
 void adcDisableCoeffOvrd(u32 *cmdVals);
-void cli_adcDisableCoeffOvrd_init(void);
-
 
 /************************** Variable Definitions *****************************/
 

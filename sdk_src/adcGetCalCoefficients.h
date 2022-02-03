@@ -8,10 +8,8 @@
 #ifndef ADCGETCALCOEFF_H_
 #define ADCGETCALCOEFF_H_
 
-
 /***************************** Include Files *********************************/
 #include "xil_types.h"
-
 
 /************************** Constant Definitions *****************************/
 
@@ -21,12 +19,8 @@
 
 /************************** Function Prototypes ******************************/
 
-
 void adcGetCalCoeff(u32 *cmdVals);
-void cli_adcGetCalCoefficients_init(void);
-
 
 /************************** Variable Definitions *****************************/
-
 
 #endif /* ADCFREEZECAL_H_ */

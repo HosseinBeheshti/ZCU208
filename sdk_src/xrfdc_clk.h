@@ -30,34 +30,33 @@
 
 /***************************** Include Files *********************************/
 
-
 /******************** Constant Definitions **********************************/
 #define RF1_ADC0_1_2594_A_SS 8
 #define RF2_ADC2_3_2594_B_SS 4
-#define LMK4208_SS           2
+#define LMK4208_SS 2
 #define RF3_DAC0_1_2594_C_SS 1
 
 #define LMK04208_count 26
 #define LMX2594_A_count 113
 
 /**************************** Type Definitions *******************************/
-typedef struct {
+typedef struct
+{
 	int XFrequency;
 	unsigned int LMX2594_A[LMX2594_A_count];
 } XClockingLmx;
 
-typedef struct {
-	int Fosc;			//Fosc freq (KHz)
-	int axiFreq;		// axi clock freq (KHz)
-	int sysrefFreq;     // sysref freq (KHz)
-	int refClkFreq;		// refclk Frequency (KHz)
-	int refClkSrc;		// 1=refclk external
+typedef struct
+{
+	int Fosc;		//Fosc freq (KHz)
+	int axiFreq;	// axi clock freq (KHz)
+	int sysrefFreq; // sysref freq (KHz)
+	int refClkFreq; // refclk Frequency (KHz)
+	int refClkSrc;	// 1=refclk external
 	unsigned int data[LMK04208_count];
 } XClockingLmk;
 
-
 /***************** Macros (Inline Functions) Definitions *********************/
-
 
 /************************** Function Prototypes ******************************/
 

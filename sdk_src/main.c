@@ -13,35 +13,24 @@
 #include "LMK_display.h"
 #include "LMX_display.h"
 #include "xrfclk.h"
-#include "uram_play_cap.h"
 
 #include <metal/log.h>
 #include <metal/sys.h>
-#include "cli.h"
-
 
 // Includes for user added CLI functions used in this file
-#include "cmd_func_mem.h"
 #include "rfdc_poweron_status.h"
-#include "rfdc_cmd.h"
-//#include "cmd_func_dac.h"
+//#include "rfdc_cmd.h"
 #include "adc_FreezeCal.h"
 #include "rfdc_nyquistzone.h"
 #include "adc_LinkCoupling.h"
 #include "rfdc_interpolation_decimation.h"
-//#include "cmd_dac_adc_int_dec.h"
 #include "rfdc_dsa_vop.h"
-#include "dac_waves.h"
 #include "rfdc_mts.h"
-//#include "cap_dma.h"
-//#include "play_dma.h"
 #include "adc_dither.h"
 #include "adcSaveCalCoefficients.h"
 #include "adcGetCalCoefficients.h"
 #include "adcLoadCalCoefficients.h"
 #include "adcDisableCoeffOvrd.h"
-
-
 
 /******************** Constant Definitions **********************************/
 #define ENABLE_METAL_PRINTS
@@ -54,14 +43,12 @@
 
 /**************************** Type Definitions *******************************/
 
-
 /***************** Macros (Inline Functions) Definitions *********************/
-
 
 /************************** Function Prototypes ******************************/
 
 void my_metal_default_log_handler(enum metal_log_level level,
-			       const char *format, ...);
+								  const char *format, ...);
 
 static int resetAllClk104(void);
 void reverse32bArray(u32 *src, int size);
@@ -69,28 +56,33 @@ void printCLK104_settings(void);
 
 /************************** Variable Definitions *****************************/
 
-
 // VT100 esc sequences
 char CHAR_ATTRIB_OFF[5] = "\x1B[0m";
-char BOLD_ON[5]      	= "\x1B[1m";
-char UNDERLINE_ON[5] 	= "\x1B[4m";
-char BLINK_ON[5]        = "\x1B[5m";
-char REVERSE_ON[5]    	= "\x1B[5m";
+char BOLD_ON[5] = "\x1B[1m";
+char UNDERLINE_ON[5] = "\x1B[4m";
+char BLINK_ON[5] = "\x1B[5m";
+char REVERSE_ON[5] = "\x1B[5m";
 
-char CLR_SCREEN[5]   	= "\x1B[2J";
-
+char CLR_SCREEN[5] = "\x1B[2J";
 
 // data buffer used for reading PLL registers
 static u32 data[256];
 
 const char clkoutBrdNames[][18] = {
-		"RFIN_RF1",   "RF1_ADC_SYNC",
-		"NC",         "AMS_SYSREF",
-		"RFIN_RF2",   "RF2_DAC_SYNC",
-		"DAC_REFCLK", "DDR_PL_CAP_SYNC",
-		"PL_CLK",     "PL_SYSREF",
-		"NC",         "J10 SINGLE END",
-		"ADC_REFCLK", "NC",
+	"RFIN_RF1",
+	"RF1_ADC_SYNC",
+	"NC",
+	"AMS_SYSREF",
+	"RFIN_RF2",
+	"RF2_DAC_SYNC",
+	"DAC_REFCLK",
+	"DDR_PL_CAP_SYNC",
+	"PL_CLK",
+	"PL_SYSREF",
+	"NC",
+	"J10 SINGLE END",
+	"ADC_REFCLK",
+	"NC",
 };
 
 lmk_config_t lmkConfig;
@@ -99,15 +91,11 @@ lmx_config_t lmxConfig;
 extern const u32 LMK_CKin[LMK_FREQ_NUM][LMK_COUNT];
 extern const u32 LMX2594[][LMX2594_COUNT];
 
-
-
 /*
  * Device instance definitions
  */
 
-XRFdc RFdcInst;      /* RFdc driver instance */
-
-
+XRFdc RFdcInst; /* RFdc driver instance */
 
 /*****************************************************************************/
 /**
@@ -127,32 +115,13 @@ XRFdc RFdcInst;      /* RFdc driver instance */
 ******************************************************************************/
 int main(void)
 {
-	u32  Val;
-	u32  Minor;
-	u32  Major;
+	u32 Val;
+	u32 Minor;
+	u32 Major;
 	int Status;
 	XRFdc_Config *ConfigPtr;
-	cmdExitVal=0;
-  int lmkConfigIndex;
+	int lmkConfigIndex;
 
-	// Initialize CLI commands structure
-	cli_init();
-	cli_cmd_func_mem_init();
-	cli_rfdc_cmd_init();
-	cli_rfdc_poweron_status_init();
-	cli_DacAdcIntDec_init();
-	cli_rfdcNyquistzone_init();
-	cli_rfdcDSAVOP_init();
-	cli_adcGetLinkCoupling_init();
-	cli_adc_dither_init();
-	cli_cmd_mts_init();
-	cli_adcFreezeCalStatus_init();
-	cli_adcGetCalCoefficients_init();
-	cli_adcSaveCalCoeff_init();
-	cli_adcLoadCalCoeff_init();
-	cli_adcDisableCoeffOvrd_init();
-	cli_dac_waves_init();
-	cli_uram_play_cap_init();
 
 	xil_printf("\n\r###############################################\n\r");
 	xil_printf("Hello RFSoC World!\n\r\n");
@@ -162,7 +131,7 @@ int main(void)
 	Major = (Val >> 24) & 0xFF;
 	Minor = (Val >> 16) & 0xFF;
 
-	xil_printf("RFDC IP Version: %d.%d\r\n",Major,Minor);
+	xil_printf("RFDC IP Version: %d.%d\r\n", Major, Minor);
 
 	// Configure on board clks
 	xil_printf("\nConfiguring the data converter clocks...\r\n");
@@ -170,7 +139,8 @@ int main(void)
 	// initialize and reset CLK104 devices on i2c and i2c muxes
 	XRFClk_Init();
 
-	if (resetAllClk104() == EXIT_FAILURE) {
+	if (resetAllClk104() == EXIT_FAILURE)
+	{
 		xil_printf("resetAllClk104() failed\n\r");
 		return XST_FAILURE;
 	}
@@ -183,16 +153,18 @@ int main(void)
 
 	//  Due to a yet to be determined issue programming to clocks twice is required on the first startup and therefore programming twice has been added, this is expected to be resolved in a future release.
 	//LMX2594_FREQ_300M00_PD	if (XST_FAILURE == XRFClk_SetConfigOnAllChipsFromConfigId(lmkConfigIndex, LMX2594_FREQ_8192M00, LMX2594_FREQ_7864M32)) {
-	if (XST_FAILURE == XRFClk_SetConfigOnAllChipsFromConfigId(lmkConfigIndex, LMX2594_FREQ_4000M00B, LMX2594_FREQ_4000M00B)) {
-	printf("Failure in XRFClk_SetConfigOnAllChipsFromConfigId()\n\r");
+	if (XST_FAILURE == XRFClk_SetConfigOnAllChipsFromConfigId(lmkConfigIndex, LMX2594_FREQ_4000M00B, LMX2594_FREQ_4000M00B))
+	{
+		printf("Failure in XRFClk_SetConfigOnAllChipsFromConfigId()\n\r");
 		return XST_FAILURE;
 	}
 
 	sleep(1);
 
 	//LMX2594_FREQ_300M00_PD	if (XST_FAILURE == XRFClk_SetConfigOnAllChipsFromConfigId(lmkConfigIndex, LMX2594_FREQ_8192M00, LMX2594_FREQ_7864M32)) {
-	if (XST_FAILURE == XRFClk_SetConfigOnAllChipsFromConfigId(lmkConfigIndex, LMX2594_FREQ_4000M00B, LMX2594_FREQ_4000M00B)) {
-	printf("Failure in XRFClk_SetConfigOnAllChipsFromConfigId()\n\r");
+	if (XST_FAILURE == XRFClk_SetConfigOnAllChipsFromConfigId(lmkConfigIndex, LMX2594_FREQ_4000M00B, LMX2594_FREQ_4000M00B))
+	{
+		printf("Failure in XRFClk_SetConfigOnAllChipsFromConfigId()\n\r");
 		return XST_FAILURE;
 	}
 
@@ -205,14 +177,11 @@ int main(void)
 	/* Close spi connections to clk104 */
 	XRFClk_Close();
 
-
 	xil_printf("\nThe design is ready to use.\r\n");
 	xil_printf("Open XSCT or the terminal to run commands.\r\n");
 	xil_printf("###############################################\n\r");
 
-
 	xil_printf("\r\n--------------- Entering main() ---------------\n\r");
-
 
 	/////////////////////////////////////////////////////////////////////////////////
 	// Initialize RFdc
@@ -220,42 +189,45 @@ int main(void)
 	//  .log_level		= METAL_LOG_INFO,
 
 #ifdef ENABLE_METAL_PRINTS
-    xil_printf("=== Metal log enabled ===\n\r");
+	xil_printf("=== Metal log enabled ===\n\r");
 
-	struct metal_init_params init_param = {	\
-			.log_handler	= my_metal_default_log_handler,	\
-			.log_level		= METAL_LOG_DEBUG,			\
+	struct metal_init_params init_param = {
+		.log_handler = my_metal_default_log_handler,
+		.log_level = METAL_LOG_DEBUG,
 
 	};
 #else
 	struct metal_init_params init_param = METAL_INIT_DEFAULTS;
 #endif
 
-	if (metal_init(&init_param)) {
+	if (metal_init(&init_param))
+	{
 		xil_printf("ERROR: Failed to run metal initialization\n");
 		return XRFDC_FAILURE;
 	}
 	/* Initialize the RFdc driver. */
 	ConfigPtr = XRFdc_LookupConfig(RFDC_DEVICE_ID);
-	if (ConfigPtr == NULL) {
+	if (ConfigPtr == NULL)
+	{
 		xil_printf("Failed to init RFdc driver\r\n");
 		return XST_FAILURE;
-	}else{
+	}
+	else
+	{
 		xil_printf("\n\rDeviceID: %d \r\nSilicon Revision: %d\r\n", ConfigPtr->DeviceId, ConfigPtr->SiRevision);
-
 	}
 
 	/* Initializes the controller */
 	Status = XRFdc_CfgInitialize(&RFdcInst, ConfigPtr);
-	if (Status != XST_SUCCESS) {
+	if (Status != XST_SUCCESS)
+	{
 		xil_printf("Failed to init RFdc controller\r\n");
 		return XST_FAILURE;
-		
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////
 	// Display various configurations/status of RFDC
-    // Startup RFDC's
+	// Startup RFDC's
 	rfdcStartup(NULL);
 	dacResetAll(NULL);
 	adcResetAll(NULL);
@@ -269,36 +241,12 @@ int main(void)
 	/////////////////////////////////////////////////////////////////////////////////
 	// Main Loop
 
-    xil_printf("--------------------------------\r\n");
-    xil_printf("Available commands:\r\n");
-    xil_printf("--------------------------------\r\n");
-	doHelp();
-
-
-	// Run command line interpreter
-	xil_printf("Enter ? for help on commands\n\r");
-	xil_printf("Enter 'exit' to end the application and shutdown the data converters.\n\r");
-
-
-	while(!cmdExitVal) {
-		xil_printf( "> ");
-		Status = cmdParseAndRun();
-		if (Status == XST_NO_DATA) {
-			continue;
-		}
-		if (Status != XST_SUCCESS) {
-			xil_printf("Invalid command or option. Enter ? for help. \n\r");
-		}
-	}
 	rfdcShutdown(NULL);
 	xil_printf("--- Application closed, have a good day! --- \r\n");
 
-	//Exited cmd loop
-	while(1);
 
 	return XST_SUCCESS;
 }
-
 
 /*****************************************************************************/
 /**
@@ -310,7 +258,7 @@ int main(void)
 ******************************************************************************/
 
 void my_metal_default_log_handler(enum metal_log_level level,
-			       const char *format, ...)
+								  const char *format, ...)
 {
 	char msg[1024];
 	char msgOut[1048];
@@ -335,27 +283,36 @@ void my_metal_default_log_handler(enum metal_log_level level,
 
 	//replace single \n with \n\r
 	outPtr = msgOut;
-	for(i=0; i<1024; i++) {
+	for (i = 0; i < 1024; i++)
+	{
 		// if /n/r or /r/n combo
-		if ((msg[i] == '\r' && msg[i+1] == '\n') ||
-				(msg[i] == '\n' && msg[i+1] == '\r')) {
+		if ((msg[i] == '\r' && msg[i + 1] == '\n') ||
+			(msg[i] == '\n' && msg[i + 1] == '\r'))
+		{
 			*outPtr++ = msg[i++];
-		} else if(msg[i] == '\n') {
+		}
+		else if (msg[i] == '\n')
+		{
 			//if first char in string is \n, then remove
-			if(i==0) {
+			if (i == 0)
+			{
 				continue;
-			} else {
+			}
+			else
+			{
 				*outPtr++ = '\r';
 			}
 		}
 		*outPtr++ = msg[i];
-		if(msg[i] == 0) {
+		if (msg[i] == 0)
+		{
 			break;
 		}
 	}
 	//if line doesn't end with \n\r, then add it
-	if( (msg[i-1] != '\n') && (msg[i-1] != '\r') ) {
-		*(outPtr-1) = '\r';
+	if ((msg[i - 1] != '\n') && (msg[i - 1] != '\r'))
+	{
+		*(outPtr - 1) = '\r';
 		*outPtr++ = '\n';
 		*outPtr++ = 0;
 	}
@@ -365,7 +322,6 @@ void my_metal_default_log_handler(enum metal_log_level level,
 
 	xil_printf("%s%s", level_strs[level], msgOut);
 }
-
 
 /****************************************************************************/
 /**
@@ -384,27 +340,31 @@ void my_metal_default_log_handler(enum metal_log_level level,
 static int resetAllClk104(void)
 {
 	int ret = EXIT_FAILURE;
-//	printf("Reset LMK\n\r");
-	if (XST_FAILURE == XRFClk_ResetChip(RFCLK_LMK)) {
+	//	printf("Reset LMK\n\r");
+	if (XST_FAILURE == XRFClk_ResetChip(RFCLK_LMK))
+	{
 		printf("Failure in XRFClk_ResetChip(RFCLK_LMK)\n\r");
 		return ret;
 	}
 
-//	printf("Reset LMX2594_1\n\r");
-	if (XST_FAILURE == XRFClk_ResetChip(RFCLK_LMX2594_1)) {
+	//	printf("Reset LMX2594_1\n\r");
+	if (XST_FAILURE == XRFClk_ResetChip(RFCLK_LMX2594_1))
+	{
 		printf("Failure in XRFClk_ResetChip(RFCLK_LMX2594_1)\n\r");
 		return ret;
 	}
 
-//	printf("Reset LMX2594_2\n\r");
-	if (XST_FAILURE == XRFClk_ResetChip(RFCLK_LMX2594_2)) {
+	//	printf("Reset LMX2594_2\n\r");
+	if (XST_FAILURE == XRFClk_ResetChip(RFCLK_LMX2594_2))
+	{
 		printf("Failure in XRFClk_ResetChip(RFCLK_LMX2594_2)\n\r");
 		return ret;
 	}
 
 #ifdef XPS_BOARD_ZCU111
-//	printf("Reset LMX2594_3\n\r");
-	if (XST_FAILURE == XRFClk_ResetChip(RFCLK_LMX2594_3)) {
+	//	printf("Reset LMX2594_3\n\r");
+	if (XST_FAILURE == XRFClk_ResetChip(RFCLK_LMX2594_3))
+	{
 		printf("Failure in XRFClk_ResetChip(RFCLK_LMX2594_3)\n\r");
 		return ret;
 	}
@@ -412,7 +372,6 @@ static int resetAllClk104(void)
 
 	return EXIT_SUCCESS;
 }
-
 
 /****************************************************************************/
 /**
@@ -432,39 +391,47 @@ static int resetAllClk104(void)
 void printLMKsettings(lmk_config_t *lmkInstPtr)
 {
 
-
 #ifdef LMK_DEBUG
-    LMK_intermediateDump(lmkInstPtr);
+	LMK_intermediateDump(lmkInstPtr);
 #endif
 
-    // Print LMK CLKin frequencies
-    if(lmkInstPtr->clkin_sel_mode == LMK_CLKin_SEL_MODE_AUTO_MODE ) {
-    	xil_printf("CLKin Auto Mode Enabled\n\r");
-    }
-    for(int i=0; i<3; i++) {
-    	if(lmkInstPtr->clkin[i].freq != -1) {
-    		xil_printf("CLKin%d_freq: %12ld KHz\n\r", i, lmkInstPtr->clkin[i].freq/1000);
-    	}
-    }
+	// Print LMK CLKin frequencies
+	if (lmkInstPtr->clkin_sel_mode == LMK_CLKin_SEL_MODE_AUTO_MODE)
+	{
+		xil_printf("CLKin Auto Mode Enabled\n\r");
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		if (lmkInstPtr->clkin[i].freq != -1)
+		{
+			xil_printf("CLKin%d_freq: %12ld KHz\n\r", i, lmkInstPtr->clkin[i].freq / 1000);
+		}
+	}
 
-    // Print LMK CLKout frequencies
-	for(int i=0; i<7; i++) {
-		xil_printf("DCLKout%02d(%-10s):", i*2, clkoutBrdNames[i*2]);
-		if(lmkInstPtr->clkout[i].dclk_freq == -1) {
+	// Print LMK CLKout frequencies
+	for (int i = 0; i < 7; i++)
+	{
+		xil_printf("DCLKout%02d(%-10s):", i * 2, clkoutBrdNames[i * 2]);
+		if (lmkInstPtr->clkout[i].dclk_freq == -1)
+		{
 			xil_printf("%13s", "-----");
-		} else {
-			xil_printf("%9ld KHz", lmkInstPtr->clkout[i].dclk_freq/1000);
+		}
+		else
+		{
+			xil_printf("%9ld KHz", lmkInstPtr->clkout[i].dclk_freq / 1000);
 		}
 
-		xil_printf(" SDCLKout%02d(%-15s):", i*2 + 1, clkoutBrdNames[i*2 +1]);
-		if(lmkInstPtr->clkout[i].sclk_freq == -1) {
+		xil_printf(" SDCLKout%02d(%-15s):", i * 2 + 1, clkoutBrdNames[i * 2 + 1]);
+		if (lmkInstPtr->clkout[i].sclk_freq == -1)
+		{
 			xil_printf("%13\n\r", "-----");
-		} else {
-			xil_printf("%9ld KHz\n\r", lmkInstPtr->clkout[i].sclk_freq/1000);
+		}
+		else
+		{
+			xil_printf("%9ld KHz\n\r", lmkInstPtr->clkout[i].sclk_freq / 1000);
 		}
 	}
 }
-
 
 /****************************************************************************/
 /**
@@ -486,33 +453,34 @@ void printLMKsettings(lmk_config_t *lmkInstPtr)
 void printLMXsettings(long int clkin, lmx_config_t *lmxInstPtr)
 {
 
-
 #ifdef LMX_DEBUG
-    LMX_intermediateDump(lmxInstPtr);
+	LMX_intermediateDump(lmxInstPtr);
 #endif
 
-    // Print LMX CLKin freq
-    xil_printf("CLKin_freq: %10ld KHz\n\r", clkin/1000);
+	// Print LMX CLKin freq
+	xil_printf("CLKin_freq: %10ld KHz\n\r", clkin / 1000);
 
-
-    // Print LMX CLKout frequencies
+	// Print LMX CLKout frequencies
 	xil_printf("RFoutA Freq:");
-	if(lmxInstPtr->RFoutA_freq == -1) {
+	if (lmxInstPtr->RFoutA_freq == -1)
+	{
 		xil_printf("%13s\n\r", "-----");
-	} else {
-		xil_printf("%10ld KHz\n\r", lmxInstPtr->RFoutA_freq/1000);
+	}
+	else
+	{
+		xil_printf("%10ld KHz\n\r", lmxInstPtr->RFoutA_freq / 1000);
 	}
 
 	xil_printf("RFoutB Freq:");
-	if(lmxInstPtr->RFoutB_freq == -1) {
+	if (lmxInstPtr->RFoutB_freq == -1)
+	{
 		xil_printf("%13s\n\r", "-----");
-	} else {
-		xil_printf("%10ld KHz\n\r", lmxInstPtr->RFoutB_freq/1000);
 	}
-
+	else
+	{
+		xil_printf("%10ld KHz\n\r", lmxInstPtr->RFoutB_freq / 1000);
+	}
 }
-
-
 
 /****************************************************************************/
 /**
@@ -534,18 +502,21 @@ void printLMXsettings(long int clkin, lmx_config_t *lmxInstPtr)
 void printCLK104_settings(void)
 {
 	char pllNames[3][9] = {"LMK ----", "LMX_RF1", "LMX_RF2"};
-	u32  chipIds[3] = {RFCLK_LMK, RFCLK_LMX2594_1, RFCLK_LMX2594_2};
+	u32 chipIds[3] = {RFCLK_LMK, RFCLK_LMX2594_1, RFCLK_LMX2594_2};
 
-	for(int i=0; i<3; i++) {
-		if (XST_FAILURE == XRFClk_GetConfigFromOneChip(chipIds[i], data)) {
+	for (int i = 0; i < 3; i++)
+	{
+		if (XST_FAILURE == XRFClk_GetConfigFromOneChip(chipIds[i], data))
+		{
 			printf("Failure in XRFClk_GetConfigFromOneChip()\n\r");
 			return;
 		}
 
 		// For LMX, reverse readback data to match exported register sets and
 		// order of LMX2594[][]
-		if(chipIds[i] != RFCLK_LMK) {
-			reverse32bArray(data, LMX2594_COUNT-3);
+		if (chipIds[i] != RFCLK_LMK)
+		{
+			reverse32bArray(data, LMX2594_COUNT - 3);
 		}
 
 #if 0
@@ -560,33 +531,36 @@ void printCLK104_settings(void)
 
 		// Display clock values of device
 		printf("Clk settings read from %s ---------------------\n\r", pllNames[i]);
-		if(chipIds[i] == RFCLK_LMK) {
+		if (chipIds[i] == RFCLK_LMK)
+		{
 			LMK_init(data, &lmkConfig);
 			printLMKsettings(&lmkConfig);
-		} else {
+		}
+		else
+		{
 			// clkout index is i=1 idx = 0, i=2 idx=2. i&2 meets this alg
-			LMX_SettingsInit(lmkConfig.clkout[ (i & 2) ].dclk_freq, data, &lmxConfig);
-			printLMXsettings(lmkConfig.clkout[ (i & 2) ].dclk_freq, &lmxConfig);		}
+			LMX_SettingsInit(lmkConfig.clkout[(i & 2)].dclk_freq, data, &lmxConfig);
+			printLMXsettings(lmkConfig.clkout[(i & 2)].dclk_freq, &lmxConfig);
+		}
 		xil_printf("\n\r");
 	}
 }
 
-
-
-void reverse32bArray(u32 *src, int size) {
+void reverse32bArray(u32 *src, int size)
+{
 	u32 tmp[200];
 	int i, j;
 
 	//copy src into temp
-	for(i = 0, j=size - 1; i < size; i++, j--) {
+	for (i = 0, j = size - 1; i < size; i++, j--)
+	{
 		tmp[i] = src[j];
 	}
 
 	//copy swapped array to original
-	for(i=0; i< size; i++) {
+	for (i = 0; i < size; i++)
+	{
 		src[i] = tmp[i];
 	}
 	return;
 }
-
-

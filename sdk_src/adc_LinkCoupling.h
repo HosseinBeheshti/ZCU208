@@ -8,7 +8,6 @@
 #ifndef ADCGETLINKCOUPLING_H_
 #define ADCGETLINKCOUPLING_H_
 
-
 /***************************** Include Files *********************************/
 #include "xil_types.h"
 
@@ -20,10 +19,7 @@
 
 /************************** Function Prototypes ******************************/
 
-
 void adcGetLinkCoupling(u32 *cmdVals);
-void cli_adcGetLinkCoupling_init(void);
-
 
 /************************** Variable Definitions *****************************/
 

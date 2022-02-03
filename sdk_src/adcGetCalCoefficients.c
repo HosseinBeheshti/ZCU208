@@ -9,12 +9,10 @@
 #include "xil_io.h"
 #include "xil_types.h"
 #include <stdio.h>
-#include "cli.h"
 #include "xparameters.h"
 #include "main.h"
 #include "xrfdc.h"
 #include "adcGetCalCoefficients.h"
-
 
 /************************** Constant Definitions *****************************/
 
@@ -29,29 +27,6 @@ void displayCoeff(XRFdc_Calibration_Coefficients *CoeffPtr);
 
 /************************** Function Definitions ******************************/
 
-
-/*****************************************************************************/
-/**
-*
-* cli_adcGetCalCoefficients_init Add functions from this file to CLI
-*
-* @param	None
-*
-* @return	None
-*
-* @note		TBD
-*
-******************************************************************************/
-void cli_adcGetCalCoefficients_init(void)
-{
-	static CMDSTRUCT cliCmds[] = {
-		{"adcGetCalCoeff"     , "- <tile> <adc> Get Cal Coeff for ch"     , 2, *adcGetCalCoeff},
-	};
-
-	cli_addCmds(cliCmds, sizeof(cliCmds)/sizeof(cliCmds[0]));
-}
-
-
 /*****************************************************************************/
 /**
 *
@@ -64,48 +39,49 @@ void cli_adcGetCalCoefficients_init(void)
 * @note		TBD
 *
 ******************************************************************************/
-void adcGetCalCoeff (u32 *cmdVals)
+void adcGetCalCoeff(u32 *cmdVals)
 {
 	u32 Tile_Id;
 	u32 Block_Id;
 	XRFdc_IPStatus ipStatus;
-	XRFdc* RFdcInstPtr = &RFdcInst;
+	XRFdc *RFdcInstPtr = &RFdcInst;
 	XRFdc_Calibration_Coefficients calCoefficients;
 
 	Tile_Id = cmdVals[0];
 	Block_Id = cmdVals[1];
 
-    XRFdc_GetIPStatus(RFdcInstPtr, &ipStatus);
+	XRFdc_GetIPStatus(RFdcInstPtr, &ipStatus);
 	xil_printf("\n\r###############################################\n\r");
 	xil_printf("=== ADC Cal Coefficients Report ===\n\r");
 
-	if(XRFdc_IsADCBlockEnabled(RFdcInstPtr, Tile_Id, Block_Id) == 1) {
+	if (XRFdc_IsADCBlockEnabled(RFdcInstPtr, Tile_Id, Block_Id) == 1)
+	{
 
-		XRFdc_GetCalCoefficients(RFdcInstPtr, Tile_Id, Block_Id,XRFDC_CAL_BLOCK_OCB1, &calCoefficients);
+		XRFdc_GetCalCoefficients(RFdcInstPtr, Tile_Id, Block_Id, XRFDC_CAL_BLOCK_OCB1, &calCoefficients);
 		xil_printf("   ADC Tile%d ch%d OCB1 Cal Coefficients: \r\n", Tile_Id, Block_Id);
 		displayCoeff(&calCoefficients);
 
-		XRFdc_GetCalCoefficients(RFdcInstPtr, Tile_Id, Block_Id,XRFDC_CAL_BLOCK_OCB2, &calCoefficients);
+		XRFdc_GetCalCoefficients(RFdcInstPtr, Tile_Id, Block_Id, XRFDC_CAL_BLOCK_OCB2, &calCoefficients);
 		xil_printf("   ADC Tile%d ch%d OCB2 Cal Coefficients: \r\n", Tile_Id, Block_Id);
 		displayCoeff(&calCoefficients);
 
-		XRFdc_GetCalCoefficients(RFdcInstPtr, Tile_Id, Block_Id,XRFDC_CAL_BLOCK_GCB, &calCoefficients);
+		XRFdc_GetCalCoefficients(RFdcInstPtr, Tile_Id, Block_Id, XRFDC_CAL_BLOCK_GCB, &calCoefficients);
 		xil_printf("   ADC Tile%d ch%d GCB Cal Coefficients: \r\n", Tile_Id, Block_Id);
 		displayCoeff(&calCoefficients);
 
-		XRFdc_GetCalCoefficients(RFdcInstPtr, Tile_Id, Block_Id,XRFDC_CAL_BLOCK_TSCB, &calCoefficients);
+		XRFdc_GetCalCoefficients(RFdcInstPtr, Tile_Id, Block_Id, XRFDC_CAL_BLOCK_TSCB, &calCoefficients);
 		xil_printf("   ADC Tile%d ch%d TSCB Cal Coefficients: \r\n", Tile_Id, Block_Id);
 		displayCoeff(&calCoefficients);
-
-	} else {
-			(xil_printf("Tile%d Ch%d is not available.\n\r",Tile_Id,Block_Id ));
+	}
+	else
+	{
+		(xil_printf("Tile%d Ch%d is not available.\n\r", Tile_Id, Block_Id));
 	}
 
 	xil_printf("###############################################\r\n\n");
 
 	return;
 }
-
 
 /*****************************************************************************/
 /**
@@ -132,6 +108,3 @@ void displayCoeff(XRFdc_Calibration_Coefficients *CoeffPtr)
 
 	return;
 }
-
-
-

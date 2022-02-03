@@ -10,7 +10,6 @@
 /***************************** Include Files *********************************/
 #include "xil_types.h"
 
-
 /************************** Constant Definitions *****************************/
 
 /**************************** Type Definitions *******************************/
@@ -19,14 +18,9 @@
 
 /************************** Function Prototypes ******************************/
 
-void cli_adc_dither_init(void);
-
 void adcGetDither(u32 *cmdVals);
 void adcSetDither(u32 *cmdVals);
 
 /************************** Variable Definitions *****************************/
 
-
-
 #endif /* SRC_ADC_DITHER_H_ */
-
