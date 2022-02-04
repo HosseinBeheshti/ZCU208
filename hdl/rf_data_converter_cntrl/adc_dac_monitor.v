@@ -113,14 +113,14 @@ module adc_dac_monitor
      output [15:0] adc_line_6,
      output [15:0] adc_line_7,
      input [2:0] dac_debug_select,
-     output [15:0] adc_line_0,
-     output [15:0] adc_line_1,
-     output [15:0] adc_line_2,
-     output [15:0] adc_line_3,
-     output [15:0] adc_line_4,
-     output [15:0] adc_line_5,
-     output [15:0] adc_line_6,
-     output [15:0] adc_line_7
+     output [15:0] dac_line_0,
+     output [15:0] dac_line_1,
+     output [15:0] dac_line_2,
+     output [15:0] dac_line_3,
+     output [15:0] dac_line_4,
+     output [15:0] dac_line_5,
+     output [15:0] dac_line_6,
+     output [15:0] dac_line_7
    );
 
   reg [16*NUMBER_OF_LINE-1:0] adc0_data_temp;
