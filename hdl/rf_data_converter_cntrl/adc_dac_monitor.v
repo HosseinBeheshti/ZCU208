@@ -112,7 +112,7 @@ module adc_dac_monitor
      output [15:0] adc_line_5,
      output [15:0] adc_line_6,
      output [15:0] adc_line_7,
-     input [2:0] dac_debug_select,
+     input [2:0] dac_monitor_select,
      output [15:0] dac_line_0,
      output [15:0] dac_line_1,
      output [15:0] dac_line_2,
