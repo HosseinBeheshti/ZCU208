@@ -44,6 +44,7 @@ module tx_core
    );
 
   genvar i;
+  logic resetn_reg;
   logic [13:0] adc1_data_array[NUMBER_OF_LINE];
   logic [16*NUMBER_OF_LINE-1:0] adc1_data_i_shift;
   logic [16*NUMBER_OF_LINE-1:0] adc1_data_q_shift;
@@ -57,13 +58,17 @@ module tx_core
   assign adc1_tready = 1;
   assign adc2_tready = 1;
   assign adc3_tready = 1;
+  always @(posedge clock)
+  begin
+    resetn_reg <= resetn;
+  end
 
   iq_freq_shift
     #(NUMBER_OF_LINE)
     iq_freq_shift_inst1
     (
       .clock(clock),
-      .resetn(adc1_tvalid && resetn),
+      .resetn(adc1_tvalid && resetn_reg),
       .data_in_i(adc1_tdata),
       .data_in_q(),
       .dds_phase_inc(dds_phase_inc1),
@@ -76,7 +81,7 @@ module tx_core
     iq_freq_shift_inst2
     (
       .clock(clock),
-      .resetn(adc3_tvalid && resetn),
+      .resetn(adc3_tvalid && resetn_reg),
       .data_in_i(adc2_tdata),
       .data_in_q(),
       .dds_phase_inc(dds_phase_inc2),
@@ -89,7 +94,7 @@ module tx_core
     iq_freq_shift_inst3
     (
       .clock(clock),
-      .resetn(adc3_tvalid && resetn),
+      .resetn(adc3_tvalid && resetn_reg),
       .data_in_i(adc3_tdata),
       .data_in_q(),
       .dds_phase_inc(dds_phase_inc3),
