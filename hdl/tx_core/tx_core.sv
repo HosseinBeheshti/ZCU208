@@ -101,13 +101,19 @@ module tx_core
   begin
     case (output_select)
       1:
-        output_data_temp <= {adc1_data_q_shift,adc1_data_i_shift};
+        output_data_temp <= {128'd0,adc1_tdata};
       2:
-        output_data_temp <= {adc2_data_q_shift,adc2_data_i_shift};
+        output_data_temp <= {128'd0,adc2_tdata};
       3:
+        output_data_temp <= {128'd0,adc3_tdata};
+      4:
+        output_data_temp <= {adc1_data_q_shift,adc1_data_i_shift};
+      5:
+        output_data_temp <= {adc2_data_q_shift,adc2_data_i_shift};
+      6:
         output_data_temp <= {adc3_data_q_shift,adc3_data_i_shift};
       default:
-        output_data_temp <= {adc1_data_q_shift,adc1_data_i_shift};
+        output_data_temp <= {128'd0,adc1_tdata};
     endcase
   end
   generate
