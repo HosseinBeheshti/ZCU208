@@ -22,6 +22,8 @@ module adc_dac_monitor
      parameter NUMBER_OF_LINE = 8
    )
    (
+     (* X_INTERFACE_INFO = "xilinx.com:signal:clock:1.0 clock CLK" *)
+     (* X_INTERFACE_PARAMETER = "FREQ_HZ 500000000" *)
      input clock,
      // adcx: tile xxx
      input adc0_in_tvalid,
