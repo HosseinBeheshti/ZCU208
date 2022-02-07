@@ -3104,10 +3104,15 @@ set_property -dict [list CONFIG.Component_Name {dds_compiler_core} CONFIG.PartsP
 generate_target {instantiation_template} [get_files ${origin_dir}/build/pl/${_xil_proj_name_}/${_xil_proj_name_}.srcs/sources_1/ip/dds_compiler_core/dds_compiler_core.xci]
 set_property generate_synth_checkpoint 0 [get_files dds_compiler_core.xci]
 
-create_ip -name cmpy -vendor xilinx.com -library ip -version 6.0 -module_name ddc_cmpy_core
-set_property -dict [list CONFIG.Component_Name {ddc_cmpy_core} CONFIG.APortWidth {14} CONFIG.OutputWidth {31}] [get_ips ddc_cmpy_core]
-generate_target {instantiation_template} [get_files ${origin_dir}/build/pl/${_xil_proj_name_}/${_xil_proj_name_}.srcs/sources_1/ip/ddc_cmpy_core/ddc_cmpy_core.xci]
-set_property generate_synth_checkpoint 0 [get_files ddc_cmpy_core.xci]
+create_ip -name mult_gen -vendor xilinx.com -library ip -version 12.0 -module_name tx_lo_mult_gen
+set_property -dict [list CONFIG.Component_Name {tx_lo_mult_gen} CONFIG.PortAWidth {16} CONFIG.PortBWidth {16} CONFIG.Multiplier_Construction {Use_Mults} CONFIG.Use_Custom_Output_Width {true} CONFIG.OutputWidthHigh {31} CONFIG.OutputWidthLow {16} CONFIG.PipeStages {3}] [get_ips tx_lo_mult_gen]
+generate_target {instantiation_template} [get_files ${origin_dir}/build/pl/${_xil_proj_name_}/${_xil_proj_name_}.srcs/sources_1/ip/tx_lo_mult_gen/tx_lo_mult_gen.xci]
+set_property generate_synth_checkpoint 0 [get_files tx_lo_mult_gen.xci]
+
+create_ip -name c_addsub -vendor xilinx.com -library ip -version 12.0 -module_name tx_sum_addsub
+set_property -dict [list CONFIG.Component_Name {tx_sum_addsub} CONFIG.Implementation {DSP48} CONFIG.A_Width {16} CONFIG.B_Width {16} CONFIG.Latency_Configuration {Automatic} CONFIG.CE {false} CONFIG.A_Width {16} CONFIG.B_Width {16} CONFIG.Out_Width {16} CONFIG.Latency {2} CONFIG.B_Value {0000000000000000}] [get_ips tx_sum_addsub]
+generate_target {instantiation_template} [get_files ${origin_dir}/build/pl/${_xil_proj_name_}/${_xil_proj_name_}srcs/sources_1/ip/tx_sum_addsub/tx_sum_addsub.xci]
+set_property generate_synth_checkpoint 0 [get_files tx_sum_addsub.xci]
 # H128B717------------------------------------------------------------------------
 # End of cr_bd_design_1()
 cr_bd_design_1 ""
