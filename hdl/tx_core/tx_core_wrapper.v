@@ -26,8 +26,7 @@ module tx_core_wrapper
     input [127:0] adc1_data,
     input [127:0] adc2_data,
     input [127:0] adc3_data,
-    output [127:0] dac_data,
-    output [127:0] dbg_output_data
+    output [127:0] dac_data
   );
 
   tx_core tx_core_inst
