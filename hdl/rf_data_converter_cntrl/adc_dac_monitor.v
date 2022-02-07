@@ -125,14 +125,14 @@ module adc_dac_monitor
      output [15:0] dac_line_7
    );
 
-  reg [16*NUMBER_OF_LINE-1:0] adc0_data_temp;
-  reg [16*NUMBER_OF_LINE-1:0] adc1_data_temp;
-  reg [16*NUMBER_OF_LINE-1:0] adc2_data_temp;
-  reg [16*NUMBER_OF_LINE-1:0] adc3_data_temp;
-  reg [16*NUMBER_OF_LINE-1:0] adc4_data_temp;
-  reg [16*NUMBER_OF_LINE-1:0] adc5_data_temp;
-  reg [16*NUMBER_OF_LINE-1:0] adc6_data_temp;
-  reg [16*NUMBER_OF_LINE-1:0] adc7_data_temp;
+  wire [16*NUMBER_OF_LINE-1:0] adc0_data_temp;
+  wire [16*NUMBER_OF_LINE-1:0] adc1_data_temp;
+  wire [16*NUMBER_OF_LINE-1:0] adc2_data_temp;
+  wire [16*NUMBER_OF_LINE-1:0] adc3_data_temp;
+  wire [16*NUMBER_OF_LINE-1:0] adc4_data_temp;
+  wire [16*NUMBER_OF_LINE-1:0] adc5_data_temp;
+  wire [16*NUMBER_OF_LINE-1:0] adc6_data_temp;
+  wire [16*NUMBER_OF_LINE-1:0] adc7_data_temp;
   reg [16*NUMBER_OF_LINE-1:0] adc_monitor_data;
   reg [16*NUMBER_OF_LINE-1:0] dac_monitor_data;
 

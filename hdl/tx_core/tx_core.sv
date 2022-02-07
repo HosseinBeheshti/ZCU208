@@ -33,20 +33,18 @@ module tx_core
    );
 
   genvar i;
-  logic resetn_reg;
   logic [15:0] adc1_data_array[NUMBER_OF_LINE];
   logic [15:0] adc2_data_array[NUMBER_OF_LINE];
   logic [15:0] adc3_data_array[NUMBER_OF_LINE];
+  logic [15:0] phase_acc_value = 0;
+  logic [31:0] dds_data_array[NUMBER_OF_LINE];
+  logic [15:0] dds_sin_array[NUMBER_OF_LINE];
+  logic [15:0] dds_cosin_array[NUMBER_OF_LINE];
   logic [15:0] sin_mult_data_array[NUMBER_OF_LINE];
   logic [15:0] cosin_mult_data_array[NUMBER_OF_LINE];
   logic [15:0] adder1_data_array[NUMBER_OF_LINE];
   logic [15:0] adder2_data_array[NUMBER_OF_LINE];
   logic [15:0] data_out_array[NUMBER_OF_LINE];
-
-  always @(posedge clock)
-  begin
-    resetn_reg <= resetn;
-  end
 
   // generate NUMBER_OF_LINE-line 4GSPS DDS signal
   always @(posedge clock)
