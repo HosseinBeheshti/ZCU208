@@ -96,18 +96,18 @@ module tx_core
 
       tx_sum_addsub  tx_sum_addsub_inst1
                      (
-                       A(sin_mult_data_array[i]),
-                       B(cosin_mult_data_array[i]),
-                       CLK(clock),
-                       S(adder1_data_array[i])
+                       .A(sin_mult_data_array[i]),
+                       .B(cosin_mult_data_array[i]),
+                       .CLK(clock),
+                       .S(adder1_data_array[i])
                      );
 
       tx_sum_addsub  tx_sum_addsub_inst2
                      (
-                       A(adder1_data_array[i]),
-                       B(adc3_data_array[i]),
-                       CLK(clock),
-                       S(adder2_data_array[i])
+                       .A(adder1_data_array[i]),
+                       .B(adc3_data_array[i]),
+                       .CLK(clock),
+                       .S(adder2_data_array[i])
                      );
 
       always @(posedge clock)
