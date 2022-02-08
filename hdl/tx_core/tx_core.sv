@@ -36,6 +36,7 @@ module tx_core
   logic [15:0] adc1_data_array[NUMBER_OF_LINE];
   logic [15:0] adc2_data_array[NUMBER_OF_LINE];
   logic [15:0] adc3_data_array[NUMBER_OF_LINE];
+  logic [15:0] dds_phase_inc= 0;
   logic [15:0] phase_acc_value = 0;
   logic [31:0] dds_data_array[NUMBER_OF_LINE];
   logic [15:0] dds_sin_array[NUMBER_OF_LINE];
@@ -49,7 +50,8 @@ module tx_core
   // generate NUMBER_OF_LINE-line 4GSPS DDS signal
   always @(posedge clock)
   begin
-    phase_acc_value <= phase_acc_value + 8*lo_dds_phase_inc;
+    dds_phase_inc <= lo_dds_phase_inc;
+    phase_acc_value <= phase_acc_value + 8*dds_phase_inc;
   end
 
   generate
@@ -67,7 +69,7 @@ module tx_core
                         (
                           .aclk(clock),
                           .s_axis_phase_tvalid(resetn),
-                          .s_axis_phase_tdata(phase_acc_value + i*lo_dds_phase_inc),
+                          .s_axis_phase_tdata(phase_acc_value + i*dds_phase_inc),
                           .m_axis_data_tvalid(),
                           .m_axis_data_tdata(dds_data_array[i])
                         );
