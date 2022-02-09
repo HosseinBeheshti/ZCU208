@@ -25,4 +25,9 @@ dens  = 20;              % Density Factor
 [N, Fo, Ao, W] = firpmord([Fpass, Fstop]/(Fs/2), [1 0], [Dpass, Dstop]);
 % Calculate the coefficients using the FIRPM function.
 lpf1_coefficient = firpm(N, Fo, Ao, W, {dens});
+%% 
+f_duc = 2.4e9;
+
+
+
 
