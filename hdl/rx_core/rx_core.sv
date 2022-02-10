@@ -45,53 +45,53 @@ module rx_core
   logic [16*NUMBER_OF_LINE-1:0] dac3_data_i_temp1;
   logic [16*NUMBER_OF_LINE-1:0] dac3_data_q_temp1;
 
-  rx_dsp_core rx_dsp_core_inst
-              (
-                .clock(clock),
-                .resetn(resetn),
-                .adc_data(adc_data),
-                .ddc1_phase_inc(ddc1_phase_inc),
-                .ddc2_phase_inc(ddc2_phase_inc),
-                .ddc3_phase_inc(ddc3_phase_inc),
-                .dac1_data_i(dac1_data_i_temp1),
-                .dac1_data_q(dac1_data_q_temp1),
-                .dac2_data_i(dac2_data_i_temp1),
-                .dac2_data_q(dac2_data_q_temp1),
-                .dac3_data_i(dac3_data_i_temp1),
-                .dac3_data_q(dac3_data_q_temp1)
-              );
+  rx_dsp_core_sysgen rx_dsp_core_inst
+                     (
+                       .clock(clock),
+                       .resetn(resetn),
+                       .adc_data(adc_data),
+                       .ddc1_phase_inc(ddc1_phase_inc),
+                       .ddc2_phase_inc(ddc2_phase_inc),
+                       .ddc3_phase_inc(ddc3_phase_inc),
+                       .dac1_data_i(dac1_data_i_temp1),
+                       .dac1_data_q(dac1_data_q_temp1),
+                       .dac2_data_i(dac2_data_i_temp1),
+                       .dac2_data_q(dac2_data_q_temp1),
+                       .dac3_data_i(dac3_data_i_temp1),
+                       .dac3_data_q(dac3_data_q_temp1)
+                     );
 
-	  iq_freq_shift	iq_freq_shift_dac1
-	  (
-		.clock(clock),
-		.resetn(resetn),
-		.data_in_i(dac1_data_i_temp1),
-		.data_in_q(dac1_data_q_temp1),
-		.dds_phase_inc(duc1_phase_inc),
-		.data_out_i(dac1_data),
-		.data_out_q()
-	  );
+  iq_freq_shift	iq_freq_shift_dac1
+                (
+                  .clock(clock),
+                  .resetn(resetn),
+                  .data_in_i(dac1_data_i_temp1),
+                  .data_in_q(dac1_data_q_temp1),
+                  .dds_phase_inc(duc1_phase_inc),
+                  .data_out_i(dac1_data),
+                  .data_out_q()
+                );
 
-	  iq_freq_shift	iq_freq_shift_dac2
-	  (
-		.clock(clock),
-		.resetn(resetn),
-		.data_in_i(dac2_data_i_temp1),
-		.data_in_q(dac2_data_q_temp1),
-		.dds_phase_inc(duc2_phase_inc),
-		.data_out_i(dac2_data),
-		.data_out_q()
-	  );
+  iq_freq_shift	iq_freq_shift_dac2
+                (
+                  .clock(clock),
+                  .resetn(resetn),
+                  .data_in_i(dac2_data_i_temp1),
+                  .data_in_q(dac2_data_q_temp1),
+                  .dds_phase_inc(duc2_phase_inc),
+                  .data_out_i(dac2_data),
+                  .data_out_q()
+                );
 
-	  iq_freq_shift	iq_freq_shift_dac3
-	  (
-		.clock(clock),
-		.resetn(resetn),
-		.data_in_i(dac3_data_i_temp1),
-		.data_in_q(dac3_data_q_temp1),
-		.dds_phase_inc(duc3_phase_inc),
-		.data_out_i(dac3_data),
-		.data_out_q()
-	  );
+  iq_freq_shift	iq_freq_shift_dac3
+                (
+                  .clock(clock),
+                  .resetn(resetn),
+                  .data_in_i(dac3_data_i_temp1),
+                  .data_in_q(dac3_data_q_temp1),
+                  .dds_phase_inc(duc3_phase_inc),
+                  .data_out_i(dac3_data),
+                  .data_out_q()
+                );
 
 endmodule

@@ -2993,8 +2993,13 @@ set_property generate_synth_checkpoint 0 [get_files tx_lo_mult_gen.xci]
 
 create_ip -name c_addsub -vendor xilinx.com -library ip -version 12.0 -module_name tx_sum_addsub
 set_property -dict [list CONFIG.Component_Name {tx_sum_addsub} CONFIG.Implementation {DSP48} CONFIG.A_Width {16} CONFIG.B_Width {16} CONFIG.Latency_Configuration {Automatic} CONFIG.CE {false} CONFIG.A_Width {16} CONFIG.B_Width {16} CONFIG.Out_Width {16} CONFIG.Latency {2} CONFIG.B_Value {0000000000000000}] [get_ips tx_sum_addsub]
-generate_target {instantiation_template} [get_files ${origin_dir}/build/pl/${_xil_proj_name_}/${_xil_proj_name_}srcs/sources_1/ip/tx_sum_addsub/tx_sum_addsub.xci]
+generate_target {instantiation_template} [get_files ${origin_dir}/build/pl/${_xil_proj_name_}/${_xil_proj_name_}.srcs/sources_1/ip/tx_sum_addsub/tx_sum_addsub.xci]
 set_property generate_synth_checkpoint 0 [get_files tx_sum_addsub.xci]
+
+create_ip -name rx_dsp_core -vendor NoiseIran -library SysGen -version 1.0 -module_name rx_dsp_core_sysgen
+set_property -dict [list CONFIG.Component_Name {rx_dsp_core_sysgen}] [get_ips rx_dsp_core_sysgen]
+generate_target {instantiation_template} [get_files ${origin_dir}/build/pl/${_xil_proj_name_}/${_xil_proj_name_}.srcs/sources_1/ip/rx_dsp_core_sysgen/rx_dsp_core_sysgen.xci]
+set_property generate_synth_checkpoint 0 [get_files rx_dsp_core_sysgen.xci]
 # H128B717------------------------------------------------------------------------
 # End of cr_bd_design_1()
 cr_bd_design_1 ""
