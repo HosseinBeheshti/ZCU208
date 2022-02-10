@@ -47,7 +47,7 @@ module rx_core
 
   rx_dsp_core_sysgen rx_dsp_core_inst
                      (
-                       .clock(clock),
+                       .clk(clock),
                        .resetn(resetn),
                        .adc_data(adc_data),
                        .ddc1_phase_inc(ddc1_phase_inc),
