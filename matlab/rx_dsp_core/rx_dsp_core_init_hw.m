@@ -3,22 +3,19 @@ close all;
 clc;
 sim_time = 1e-3;
 %%
-fs = 4e9;
+fs = 500e6;
 ts = 1/fs;
-fc1 = 2.37e9;
-fc2 = 2.4e9;
-fc3 = 2.43e9;
-%% DDC
-downsample_ratio = 8;
-f_ddc1 = 70e6;
-f_ddc2 = 100e6;
-f_ddc3 = 130e6;
 %% filters
 lpf1_coefficient = lpf_coefficient_gen(1);
 lpf2_coefficient = lpf_coefficient_gen(0);
-%% DUC
-f_duc1 = 2.43e9;
-f_duc2 = 2.4e9;
-f_duc3 = 2.37e9;
+%% Hardware parameters
+ddc_phase_width = 16;
+ddc_data_width = 16;
+lpf1_outpu_width = 16;
+lpf1_outpu_point = 0;
+lpf2_outpu_width = 16;
+lpf2_outpu_point = 0;
+
+
 
 
