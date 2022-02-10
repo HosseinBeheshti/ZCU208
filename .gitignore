@@ -6,7 +6,7 @@ log_data/*
 qt/sdk/*
 qt/build*
 **/slprj
-**/NoiseIran_SysGen_*/*
+matlab/rx_dsp_core/ip_core/*
 vivado*.jou
 vivado*.log
 vivado*.str
