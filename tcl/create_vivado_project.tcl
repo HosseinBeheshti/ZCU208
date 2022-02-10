@@ -2911,6 +2911,11 @@ set_property -dict [list CONFIG.Component_Name {tx_sum_addsub} CONFIG.Implementa
 generate_target {instantiation_template} [get_files ${origin_dir}/build/pl/${_xil_proj_name_}/${_xil_proj_name_}.srcs/sources_1/ip/tx_sum_addsub/tx_sum_addsub.xci]
 set_property generate_synth_checkpoint 0 [get_files tx_sum_addsub.xci]
 
+create_ip -name cmpy -vendor xilinx.com -library ip -version 6.0 -module_name ddc_cmpy_core
+set_property -dict [list CONFIG.Component_Name {ddc_cmpy_core} CONFIG.APortWidth {14} CONFIG.OutputWidth {31}] [get_ips ddc_cmpy_core]
+generate_target {instantiation_template} [get_files ${origin_dir}/build/pl/${_xil_proj_name_}/${_xil_proj_name_}.srcs/sources_1/ip/ddc_cmpy_core/ddc_cmpy_core.xci]
+set_property generate_synth_checkpoint 0 [get_files ddc_cmpy_core.xci]
+
 create_ip -name rx_dsp_core -vendor NoiseIran -library SysGen -version 1.0 -module_name rx_dsp_core_sysgen
 set_property -dict [list CONFIG.Component_Name {rx_dsp_core_sysgen}] [get_ips rx_dsp_core_sysgen]
 generate_target {instantiation_template} [get_files ${origin_dir}/build/pl/${_xil_proj_name_}/${_xil_proj_name_}.srcs/sources_1/ip/rx_dsp_core_sysgen/rx_dsp_core_sysgen.xci]
