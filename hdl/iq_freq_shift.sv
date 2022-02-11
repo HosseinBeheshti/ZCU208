@@ -17,7 +17,7 @@
 // Engineer: HosseinBehshti
 //////////////////////////////////////////////////////////////////////////////////
 
-module iq_freq_shift 
+module iq_freq_shift
   #(
      parameter NUMBER_OF_LINE = 8
    )
@@ -35,6 +35,7 @@ module iq_freq_shift
   logic [13:0] data_array_i[NUMBER_OF_LINE];
   logic [13:0] data_array_q[NUMBER_OF_LINE];
   logic [15:0] phase_acc_value = 0;
+  logic [15:0] phase_tdata[NUMBER_OF_LINE];
   logic [31:0] dds_data_array[NUMBER_OF_LINE];
   logic [15:0] dds_sin_array[NUMBER_OF_LINE];
   logic [15:0] dds_cosin_array[NUMBER_OF_LINE];
@@ -62,11 +63,15 @@ module iq_freq_shift
   generate
     for (i = 0; i < NUMBER_OF_LINE; i = i + 1)
     begin
+      always @(posedge clock)
+      begin
+        phase_tdata[i] <= phase_acc_value + i*dds_phase_inc;
+      end
       dds_compiler_core	dds_compiler_core_inst
                         (
                           .aclk(clock),
                           .s_axis_phase_tvalid(resetn),
-                          .s_axis_phase_tdata(phase_acc_value + i*dds_phase_inc),
+                          .s_axis_phase_tdata(phase_tdata[i]),
                           .m_axis_data_tvalid(),
                           .m_axis_data_tdata(dds_data_array[i])
                         );
