@@ -17,28 +17,16 @@
 // Engineer: HosseinBehshti
 //////////////////////////////////////////////////////////////////////////////////
 
-module rx_core
-  #(
-     parameter NUMBER_OF_LINE = 8
-   )
+module rx_baseband_receiver
    (
      input clock,
      input resetn,
-     input [4:0] output_select,
-     input [15:0] ddc1_phase_inc,
-     input [15:0] ddc2_phase_inc,
-     input [15:0] ddc3_phase_inc,
-     input [15:0] duc1_phase_inc,
-     input [15:0] duc2_phase_inc,
-     input [15:0] duc3_phase_inc,
-     input [16*NUMBER_OF_LINE-1:0] adc_data,
-     output [16*NUMBER_OF_LINE-1:0] dac1_data,
-     output [16*NUMBER_OF_LINE-1:0] dac2_data,
-     output [16*NUMBER_OF_LINE-1:0] dac3_data
+     input [15:0] data_in,
+     input [15:0] ddc_phase_inc,
+     output [15:0] data_out
    );
 
   genvar i;
-  logic resetn_reg;
   logic [16*NUMBER_OF_LINE-1:0] dac1_data_i_temp1;
   logic [16*NUMBER_OF_LINE-1:0] dac1_data_q_temp1;
   logic [16*NUMBER_OF_LINE-1:0] dac2_data_i_temp1;
