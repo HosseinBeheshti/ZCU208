@@ -17,7 +17,7 @@
 // Engineer: HosseinBehshti
 //////////////////////////////////////////////////////////////////////////////////
 
-module iq_freq_shift 
+module iq_freq_shift
   #(
      parameter NUMBER_OF_LINE = 8
    )
@@ -32,15 +32,14 @@ module iq_freq_shift
    );
 
   genvar i;
-  logic [13:0] data_array_i[NUMBER_OF_LINE];
-  logic [13:0] data_array_q[NUMBER_OF_LINE];
+  logic [15:0] data_array_i[NUMBER_OF_LINE];
+  logic [15:0] data_array_q[NUMBER_OF_LINE];
   logic [15:0] phase_acc_value = 0;
   logic [31:0] dds_data_array[NUMBER_OF_LINE];
   logic [15:0] dds_sin_array[NUMBER_OF_LINE];
   logic [15:0] dds_cosin_array[NUMBER_OF_LINE];
   logic [31:0] cm_dds_data[NUMBER_OF_LINE];
-  logic [63:0] cm_data_array[NUMBER_OF_LINE];
-  logic [31:0] cm_output_data_array[NUMBER_OF_LINE];
+  logic [79:0] cm_data_array[NUMBER_OF_LINE];
 
   // rearrange input adc signal
   generate
@@ -48,8 +47,8 @@ module iq_freq_shift
     begin
       always @(posedge clock)
       begin
-        data_array_i[i] <= data_in_i[16*(i+1)-1:16*i+1];
-        data_array_q[i] <= data_in_q[16*(i+1)-1:16*i+1];
+        data_array_i[i] <= data_in_i[16*(i+1)-1:16*i];
+        data_array_q[i] <= data_in_q[16*(i+1)-1:16*i];
       end
     end
   endgenerate
@@ -76,23 +75,21 @@ module iq_freq_shift
         dds_cosin_array[i] <= dds_data_array[i][31:16];
       end
       assign cm_dds_data[i] = {dds_sin_array[i],dds_cosin_array[i]};
-
       // CM for NUMBER_OF_LINE  line
-      ddc_cmpy_core ddc_cmpy_core_inst
-                    (
-                      .aclk(clock),
-                      .s_axis_a_tvalid(resetn),
-                      .s_axis_a_tdata({data_array_q[i],data_array_i[i]}),
-                      .s_axis_b_tvalid(resetn),
-                      .s_axis_b_tdata(cm_dds_data[i]),
-                      .m_axis_dout_tvalid(),
-                      .m_axis_dout_tdata(cm_data_array[i])
-                    );
-
+      cmult_core cmult_core_inst
+                 (
+                   .aclk(clock),
+                   .s_axis_a_tvalid(resetn),
+                   .s_axis_a_tdata({data_array_q[i],data_array_i[i]}),
+                   .s_axis_b_tvalid(resetn),
+                   .s_axis_b_tdata(cm_dds_data[i]),
+                   .m_axis_dout_tvalid(),
+                   .m_axis_dout_tdata(cm_data_array[i])
+                 );
       always @(posedge clock)
       begin
-        data_out_i[16*(i+1)-1:16*i] <= cm_data_array[i][31:16];
-        data_out_q[16*(i+1)-1:16*i] <= cm_data_array[i][63:48];
+        data_out_i[16*(i+1)-1:16*i] <= cm_data_array[i][32:17];
+        data_out_q[16*(i+1)-1:16*i] <= cm_data_array[i][72:57];
       end
     end
   endgenerate

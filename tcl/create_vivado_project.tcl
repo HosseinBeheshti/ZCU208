@@ -39,7 +39,7 @@
 #    (Please see the '$orig_proj_dir' and '$origin_dir' variable setting below at the start of the script)
 #
 #    "/home/beheshti/projects/ZCU208/build/pl/vivado/vivado.srcs/sources_1/ip/rf_axis_data_fifo/rf_axis_data_fifo.xci"
-#    "/home/beheshti/projects/ZCU208/build/pl/vivado/vivado.srcs/sources_1/ip/ddc_cmpy_core/ddc_cmpy_core.xci"
+#    "/home/beheshti/projects/ZCU208/build/pl/vivado/vivado.srcs/sources_1/ip/cmult_core/cmult_core.xci"
 #    "/home/beheshti/projects/ZCU208/build/pl/vivado/vivado.srcs/sources_1/ip/dds_compiler_core/dds_compiler_core.xci"
 #    "/home/beheshti/projects/ZCU208/build/pl/vivado/vivado.srcs/sources_1/ip/rx_dsp_core_sysgen/rx_dsp_core_sysgen.xci"
 #    "/home/beheshti/projects/ZCU208/build/pl/vivado/vivado.srcs/sources_1/ip/tx_sum_addsub/tx_sum_addsub.xci"
@@ -248,7 +248,7 @@ add_files -norecurse -fileset $obj $files
 # Import local files from the original project
 #set files [list \
 # [file normalize "${origin_dir}/build/pl/vivado/vivado.srcs/sources_1/ip/rf_axis_data_fifo/rf_axis_data_fifo.xci" ]\
-# [file normalize "${origin_dir}/build/pl/vivado/vivado.srcs/sources_1/ip/ddc_cmpy_core/ddc_cmpy_core.xci" ]\
+# [file normalize "${origin_dir}/build/pl/vivado/vivado.srcs/sources_1/ip/cmult_core/cmult_core.xci" ]\
 # [file normalize "${origin_dir}/build/pl/vivado/vivado.srcs/sources_1/ip/dds_compiler_core/dds_compiler_core.xci" ]\
 # [file normalize "${origin_dir}/build/pl/vivado/vivado.srcs/sources_1/ip/rx_dsp_core_sysgen/rx_dsp_core_sysgen.xci" ]\
 # [file normalize "${origin_dir}/build/pl/vivado/vivado.srcs/sources_1/ip/tx_sum_addsub/tx_sum_addsub.xci" ]\
