@@ -43,7 +43,7 @@ module iq_freq_shift
 
   // DDS signal generator
   dds_multipath
-    #(.NUMBER_OF_LINE(8)
+    #(.NUMBER_OF_LINE(NUMBER_OF_LINE)
      )
     dds_multipath_inst
     (
