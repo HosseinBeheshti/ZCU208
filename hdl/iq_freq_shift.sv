@@ -34,7 +34,6 @@ module iq_freq_shift
   genvar i;
   logic [15:0] data_array_i[NUMBER_OF_LINE];
   logic [15:0] data_array_q[NUMBER_OF_LINE];
-  logic [31:0] dds_data_array[NUMBER_OF_LINE];
   logic [16*NUMBER_OF_LINE-1:0] dds_sin;
   logic [16*NUMBER_OF_LINE-1:0] dds_cosin;
   logic [15:0] dds_sin_array[NUMBER_OF_LINE];
