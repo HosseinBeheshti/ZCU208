@@ -25,13 +25,13 @@ module rx_baseband_receiver
     input [15:0] compelex_phase_inc,
     input [15:0] real_phase_inc,
     (* ASYNC_REG="true" *)
-    output [15:0] data_out1_i,
+    output logic [15:0] data_out1_i,
     (* ASYNC_REG="true" *)
-    output [15:0] data_out1_q,
+    output logic [15:0] data_out1_q,
     (* ASYNC_REG="true" *)
-    output [15:0] data_out2,
+    output logic [15:0] data_out2,
     (* ASYNC_REG="true" *)
-    output [15:0] data_out3
+    output logic [15:0] data_out3
   );
 
   genvar i;
