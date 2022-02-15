@@ -8,4 +8,5 @@ ts = 1/fs;
 %% filter coefficient
 lpf1_coefficient = lpf1;
 lpf2_coefficient = lpf2;
-
+ddc_phase_width = 16;
+ddc_data_width = 16;
