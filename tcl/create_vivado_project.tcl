@@ -3031,7 +3031,7 @@ set_property -dict [list CONFIG.OptimizeGoal {Performance} CONFIG.MinimumLatency
 generate_target {instantiation_template} [get_files ${origin_dir}/build/pl/${_xil_proj_name_}/${_xil_proj_name_}.srcs/sources_1/ip/cmult_core/cmult_core.xci]
 set_property generate_synth_checkpoint 0 [get_files cmult_core.xci]
 
-reate_ip -name fir_multipath_4line -vendor NoiseIran -library SysGen -version 1.0 -module_name fir_compiler_4path
+create_ip -name fir_multipath_4line -vendor NoiseIran -library SysGen -version 1.0 -module_name fir_compiler_4path
 set_property -dict [list CONFIG.Component_Name {fir_compiler_4path}] [get_ips fir_compiler_4path]
 generate_target {instantiation_template} [get_files ${origin_dir}/build/pl/${_xil_proj_name_}/${_xil_proj_name_}.srcs/sources_1/ip/fir_compiler_4path/fir_compiler_4path.xci]
 set_property generate_synth_checkpoint 0 [get_files fir_compiler_4path.xci]
