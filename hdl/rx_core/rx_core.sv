@@ -23,108 +23,65 @@ module rx_core
    )
    (
      input clock,
-     input resetn,
-     input [4:0] output_select,
-     input [15:0] compelex_phase_inc,
-     input [15:0] real_phase_inc,
-     input [15:0] duc1_phase_inc,
-     input [15:0] duc2_phase_inc,
-     input [15:0] duc3_phase_inc,
      input [16*NUMBER_OF_LINE-1:0] adc_data,
+     input [16-1:0] ddc_phase_inc,
+     input [16-1:0] demix_phase_inc,
+     input [16-1:0] duc1_phase_inc,
+     input [16-1:0] duc2_phase_inc,
+     input [16-1:0] duc3_phase_inc,
+     input [8-1:0] gain_duc2,
+     input [8-1:0] gain_duc3,
+     input [8-1:0] gain_duc1,
      output [16*NUMBER_OF_LINE-1:0] dac1_data,
      output [16*NUMBER_OF_LINE-1:0] dac2_data,
      output [16*NUMBER_OF_LINE-1:0] dac3_data
    );
 
   genvar i;
-  logic resetn_reg;
-  logic [16*NUMBER_OF_LINE-1:0] baseband_data1_i;
-  logic [16*NUMBER_OF_LINE-1:0] baseband_data1_q;
-  logic [16*NUMBER_OF_LINE-1:0] baseband_data2;
-  logic [16*NUMBER_OF_LINE-1:0] baseband_data3;
-  logic [16*NUMBER_OF_LINE-1:0] lpf2_data1_i;
-  logic [16*NUMBER_OF_LINE-1:0] lpf2_data1_q;
-  logic [16*NUMBER_OF_LINE-1:0] lpf2_data2_i;
-  logic [16*NUMBER_OF_LINE-1:0] lpf2_data2_q;
-  logic [16*NUMBER_OF_LINE-1:0] lpf2_data3_i;
-  logic [16*NUMBER_OF_LINE-1:0] lpf2_data3_q;
+  logic clock_down4;
 
-  always @(posedge clock)
-  begin
-    resetn_reg <= resetn;
-  end
+  BUFGCE_DIV #(
+               .BUFGCE_DIVIDE(4),
+               .IS_CE_INVERTED(1'b0),
+               .IS_CLR_INVERTED(1'b0),
+               .IS_I_INVERTED(1'b0),
+               .SIM_DEVICE("ULTRASCALE_PLUS")
+             )
+             BUFGCE_DIV_inst (
+               .O(clock_down4),
+               .CE(1'b1),
+               .CLR(1'b1),
+               .I(clock)
+             );
 
-rx_baseband_receiver rx_baseband_receiver_inst 
-(
-     .clock(clock),
-     .resetn(resetn_reg),
-     .data_in(adc_data[15:0]),
-     .compelex_phase_inc(compelex_phase_inc),
-     .real_phase_inc(real_phase_inc),
-     .data_out1_i(baseband_data1_i[15:0]),
-     .data_out1_q(baseband_data1_q[15:0]),
-     .data_out2(baseband_data2[15:0]),
-     .data_out3(baseband_data3[15:0])
-   );
 
-// upsample fir filter
-  fir_compiler_8path fir_compiler_8path_ch1_i
-                     (
-                       .clk(clock),
-                       .concat_data_in(baseband_data1_i),
-                       .concat_data_out(lpf2_data1_i)
-                     );
 
-  fir_compiler_8path fir_compiler_8path_ch1_q
-                     (
-                       .clk(clock),
-                       .concat_data_in(baseband_data1_q),
-                       .concat_data_out(lpf2_data1_q)
-                     );
-  fir_compiler_8path fir_compiler_8path_ch2
-                     (
-                       .clk(clock),
-                       .concat_data_in(baseband_data2),
-                       .concat_data_out(lpf2_data2_i)
-                     );
-  fir_compiler_8path fir_compiler_8path_ch3
-                     (
-                       .clk(clock),
-                       .concat_data_in(baseband_data3),
-                       .concat_data_out(lpf2_data3_i)
-                     );
-
-  iq_freq_shift	iq_freq_shift_dac1
-                (
-                  .clock(clock),
-                  .resetn(resetn_reg),
-                  .data_in_i(lpf2_data1_i),
-                  .data_in_q(lpf2_data1_q),
-                  .dds_phase_inc(duc1_phase_inc),
-                  .data_out_i(dac1_data),
-                  .data_out_q()
-                );
-
-  iq_freq_shift	iq_freq_shift_dac2
-                (
-                  .clock(clock),
-                  .resetn(resetn_reg),
-                  .data_in_i(lpf2_data2_i),
-                  .data_in_q(lpf2_data2_q),
-                  .dds_phase_inc(duc2_phase_inc),
-                  .data_out_i(dac2_data),
-                  .data_out_q()
-                );
-
-  iq_freq_shift	iq_freq_shift_dac3
-                (
-                  .clock(clock),
-                  .resetn(resetn_reg),
-                  .data_in_i(lpf2_data3_i),
-                  .data_in_q(lpf2_data3_q),
-                  .dds_phase_inc(duc3_phase_inc),
-                  .data_out_i(dac3_data),
-                  .data_out_q()
-                );
+  centeral_rx_dsp_core centeral_rx_dsp_core_inst (
+                         .adc_data0(adc_data[16*(1)-1:16*(0)]),
+                         .adc_data1(adc_data[16*(2)-1:16*(1)]),
+                         .adc_data2(adc_data[16*(3)-1:16*(2)]),
+                         .adc_data3(adc_data[16*(4)-1:16*(3)]),
+                         .adc_data4(adc_data[16*(5)-1:16*(4)]),
+                         .adc_data5(adc_data[16*(6)-1:16*(5)]),
+                         .adc_data6(adc_data[16*(7)-1:16*(6)]),
+                         .adc_data7(adc_data[16*(8)-1:16*(7)]),
+                         .ddc_phase_inc(ddc_phase_inc),
+                         .demix_phase_inc(demix_phase_inc),
+                         .duc1_phase_inc(duc1_phase_inc),
+                         .duc2_phase_inc(duc2_phase_inc),
+                         .duc3_phase_inc(duc3_phase_inc),
+                         .gain_duc1(gain_duc1),
+                         .gain_duc2(gain_duc2),
+                         .gain_duc3(gain_duc3),
+                         .ddc_ss_clk(clock),
+                         .duc_ss_clk(clock),
+                         .demix_ss_clk(clock_down4),
+                         .concat_imag_dac1(),
+                         .concat_imag_dac2(),
+                         .concat_imag_dac3(),
+                         .concat_real_dac1(dac1_data),
+                         .concat_real_dac2(dac2_data),
+                         .concat_real_dac3(dac3_data)
+                       );
 
 endmodule
