@@ -41,3 +41,5 @@ set_property IOSTANDARD LVCMOS18 [get_ports {clk_sync_tri_io[0]}]
 set_property SLEW FAST [get_ports {clk_sync_tri_io[0]}]
 set_property DRIVE 8 [get_ports {clk_sync_tri_io[0]}]
 ####################################################################################
+# remove timing constraint from controller registers 
+set_false_path -through [get_pins -hier -filter { name =~ *centeral_controller_vio*probe_out*}]
