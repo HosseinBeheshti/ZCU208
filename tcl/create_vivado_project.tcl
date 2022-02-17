@@ -3072,15 +3072,10 @@ set_property -dict [list CONFIG.OptimizeGoal {Performance} CONFIG.MinimumLatency
 generate_target {instantiation_template} [get_files ${origin_dir}/build/pl/${_xil_proj_name_}/${_xil_proj_name_}.srcs/sources_1/ip/cmult_core/cmult_core.xci]
 set_property generate_synth_checkpoint 0 [get_files cmult_core.xci]
 
-create_ip -name fir_multipath_4line -vendor NoiseIran -library SysGen -version 1.0 -module_name fir_compiler_4path
-set_property -dict [list CONFIG.Component_Name {fir_compiler_4path}] [get_ips fir_compiler_4path]
-generate_target {instantiation_template} [get_files ${origin_dir}/build/pl/${_xil_proj_name_}/${_xil_proj_name_}.srcs/sources_1/ip/fir_compiler_4path/fir_compiler_4path.xci]
-set_property generate_synth_checkpoint 0 [get_files fir_compiler_4path.xci]
-
-create_ip -name fir_multipath_8line -vendor NoiseIran -library SysGen -version 1.0 -module_name fir_compiler_8path
-set_property -dict [list CONFIG.Component_Name {fir_compiler_8path}] [get_ips fir_compiler_8path]
-generate_target {instantiation_template} [get_files ${origin_dir}/build/pl/${_xil_proj_name_}/${_xil_proj_name_}.srcs/sources_1/ip/fir_compiler_8path/fir_compiler_8path.xci]
-set_property generate_synth_checkpoint 0 [get_files fir_compiler_8path.xci]
+create_ip -name rx_dsp_core -vendor NoiseIran -library SysGen -version 1.0 -module_name centeral_rx_dsp_core
+set_property -dict [list CONFIG.Component_Name {centeral_rx_dsp_core}] [get_ips centeral_rx_dsp_core]
+generate_target {instantiation_template} [get_files ${origin_dir}/build/pl/${_xil_proj_name_}/${_xil_proj_name_}.srcs/sources_1/ip/centeral_rx_dsp_core/centeral_rx_dsp_core.xci]
+set_property generate_synth_checkpoint 0 [get_files centeral_rx_dsp_core.xci]
 # H128B717------------------------------------------------------------------------
 # End of cr_bd_design_1()
 cr_bd_design_1 ""
