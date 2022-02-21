@@ -23,6 +23,7 @@ module rx_core
    )
    (
      input clock,
+     input clock_down4,
      input [16*NUMBER_OF_LINE-1:0] adc_data,
      input [16-1:0] ddc_phase_inc,
      input [16-1:0] demix_phase_inc,
@@ -38,23 +39,6 @@ module rx_core
    );
 
   genvar i;
-  logic clock_down4;
-
-  BUFGCE_DIV #(
-               .BUFGCE_DIVIDE(4),
-               .IS_CE_INVERTED(1'b0),
-               .IS_CLR_INVERTED(1'b0),
-               .IS_I_INVERTED(1'b0),
-               .SIM_DEVICE("ULTRASCALE_PLUS")
-             )
-             BUFGCE_DIV_inst (
-               .O(clock_down4),
-               .CE(1'b1),
-               .CLR(1'b1),
-               .I(clock)
-             );
-
-
 
   centeral_rx_dsp_core centeral_rx_dsp_core_inst (
                          .adc_data0(adc_data[16*(1)-1:16*(0)]),

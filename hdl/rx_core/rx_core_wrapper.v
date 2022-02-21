@@ -21,6 +21,7 @@ module rx_core_wrapper
   (
 
     input clock,
+    input clock_down4,
     input [16*8-1:0] adc_data,
     input [16-1:0] ddc_phase_inc,
     input [16-1:0] demix_phase_inc,
@@ -36,6 +37,7 @@ module rx_core_wrapper
   rx_core rx_core_inst
           (
             .clock(clock),
+            .clock_down4(clock_down4),
             .adc_data(adc_data),
             .ddc_phase_inc(ddc_phase_inc),
             .demix_phase_inc(demix_phase_inc),
