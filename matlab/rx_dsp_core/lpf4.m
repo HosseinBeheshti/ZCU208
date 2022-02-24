@@ -7,17 +7,16 @@ function coef_out = lpf4
 
 % Equiripple Lowpass filter designed using the FIRPM function.
 
-% All frequency values are in MHz.
-Fs = 4000;  % Sampling Frequency
+% All frequency values are normalized to 1.
 
-Fpass = 20;              % Passband Frequency
-Fstop = 250;             % Stopband Frequency
+Fpass = 0.1;             % Passband Frequency
+Fstop = 0.15;            % Stopband Frequency
 Dpass = 0.057501127785;  % Passband Ripple
 Dstop = 0.0001;          % Stopband Attenuation
 dens  = 20;              % Density Factor
 
 % Calculate the order from the parameters using FIRPMORD.
-[N, Fo, Ao, W] = firpmord([Fpass, Fstop]/(Fs/2), [1 0], [Dpass, Dstop]);
+[N, Fo, Ao, W] = firpmord([Fpass, Fstop], [1 0], [Dpass, Dstop]);
 
 % Calculate the coefficients using the FIRPM function.
 coef_out  = firpm(N, Fo, Ao, W, {dens});
