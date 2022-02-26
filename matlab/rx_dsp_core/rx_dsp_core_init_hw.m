@@ -1,7 +1,7 @@
 clear;
 close all;
 clc;
-sim_time = 1e-3;
+sim_time = 1e-7;
 %%
 fs = 500e6;
 ts = 1/fs;
@@ -31,8 +31,8 @@ duc_convert_width = 16;
 duc_convert_point = 0;
 dds3_phase_width = 16;
 dds3_data_width = 16;
-lpf4_convert_width = 30;
-lpf4_convert_point = 18;
+lpf4_convert_width = 16;
+lpf4_convert_point = 0;
 gain_mult_width = 16;
 gain_mult_point = 0;
 dds3_cm_width = 33;
