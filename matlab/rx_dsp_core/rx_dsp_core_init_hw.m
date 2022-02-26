@@ -1,7 +1,7 @@
 clear;
 close all;
 clc;
-sim_time = 1e-3;
+sim_time = 1e-7;
 %%
 fs = 500e6;
 ts = 1/fs;
