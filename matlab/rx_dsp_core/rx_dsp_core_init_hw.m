@@ -37,5 +37,5 @@ gain_mult_width = 16;
 gain_mult_point = 0;
 dds3_cm_width = 33;
 dds3_cm_scale = -dds3_data_width+1;
-dds3_convert_width = 33;
-dds3_convert_point = 15;
+dds3_convert_width = 16;
+dds3_convert_point = 0;
