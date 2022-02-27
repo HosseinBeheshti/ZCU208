@@ -19,7 +19,7 @@ platform generate
 #-------------------
 # create application 
 #-------------------
-app create -name "zcu208_init" -platform zcu208_mts_platform
+app create -name "zcu208_init" -platform zcu208_mts_platform  -template "Empty Application(C)" 
 importsources -name zcu208_init -path ./sdk_src/ -linker-script
 #--------------
 # build project
