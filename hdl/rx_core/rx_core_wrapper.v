@@ -24,6 +24,7 @@ module rx_core_wrapper
     input clock_down4,
     input [16*8-1:0] adc_data,
     input [16-1:0] ddc_phase_inc,
+    input [16-1:0] demix_gain,
     input [16-1:0] demix_phase_inc,
     input [16-1:0] duc_phase_inc,
     input [8-1:0] gain_duc1,
