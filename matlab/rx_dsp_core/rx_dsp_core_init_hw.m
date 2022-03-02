@@ -5,6 +5,12 @@ sim_time = 1e-7;
 %%
 fs = 500e6;
 ts = 1/fs;
+iladata = importfile("iladata.csv", [3, Inf]);
+t = 0:ts:ts*1023;
+adc_data_array = table2array(iladata(:,4:11));
+dac_data_array = table2array(iladata(:,12:19));
+adc_data = reshape(adc_data_array',1,[])';
+dac_data = reshape(dac_data_array',1,[])';
 %% filter coefficient for dsp core
 lpf1_coefficient = lpf1;
 lpf2_coefficient = lpf2;
