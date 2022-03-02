@@ -1,7 +1,7 @@
 clear;
 close all;
 clc;
-sim_time = 1e-7;
+sim_time = 5e-7;
 %%
 fs = 500e6;
 ts = 1/fs;
@@ -10,6 +10,8 @@ t = 0:ts:ts*1023;
 adc_data_array = table2array(iladata(:,4:11));
 dac_data_array = table2array(iladata(:,12:19));
 adc_data = reshape(adc_data_array',1,[])';
+t_ws = 0:ts/8:(ts/8*8191);
+workspace_adc = [t_ws' adc_data];
 dac_data = reshape(dac_data_array',1,[])';
 %% filter coefficient for dsp core
 lpf1_coefficient = lpf1;
@@ -18,12 +20,12 @@ lpf2_coefficient = lpf2;
 lpf3_coefficient = lpf3;
 lpf4_coefficient = lpf4;
 %% bit width
-adc_width = 14;
+adc_width = 16;
 dds1_phase_width = 16;
-dds1_data_width = 14;
-dds1_cm_width = 29;
+dds1_data_width = 16;
+dds1_cm_width = 33;
 dds1_cm_scale = -dds1_data_width+1;
-dds1_convert_width = 14;
+dds1_convert_width = 16;
 dds1_convert_point = 0;
 demix_convert_width = 15;
 demix_convert_point = 0;
