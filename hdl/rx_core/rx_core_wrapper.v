@@ -41,6 +41,7 @@ module rx_core_wrapper
             .clock_down4(clock_down4),
             .adc_data(adc_data),
             .ddc_phase_inc(ddc_phase_inc),
+            .demix_gain(demix_gain),
             .demix_phase_inc(demix_phase_inc),
             .duc1_phase_inc(duc_phase_inc),
             .duc2_phase_inc(duc_phase_inc),
