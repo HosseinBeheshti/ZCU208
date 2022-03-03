@@ -45,14 +45,14 @@ module rx_core
   logic [15:0] dac3_data_re_array[NUMBER_OF_LINE];
 
   centeral_rx_dsp_core centeral_rx_dsp_core_inst (
-                         .adc_data0(adc_data[16*(1)-1:16*(0)+2]),
-                         .adc_data1(adc_data[16*(2)-1:16*(1)+2]),
-                         .adc_data2(adc_data[16*(3)-1:16*(2)+2]),
-                         .adc_data3(adc_data[16*(4)-1:16*(3)+2]),
-                         .adc_data4(adc_data[16*(5)-1:16*(4)+2]),
-                         .adc_data5(adc_data[16*(6)-1:16*(5)+2]),
-                         .adc_data6(adc_data[16*(7)-1:16*(6)+2]),
-                         .adc_data7(adc_data[16*(8)-1:16*(7)+2]),
+                         .adc_data0(adc_data[16*(1)-1:16*(0)]),
+                         .adc_data1(adc_data[16*(2)-1:16*(1)]),
+                         .adc_data2(adc_data[16*(3)-1:16*(2)]),
+                         .adc_data3(adc_data[16*(4)-1:16*(3)]),
+                         .adc_data4(adc_data[16*(5)-1:16*(4)]),
+                         .adc_data5(adc_data[16*(6)-1:16*(5)]),
+                         .adc_data6(adc_data[16*(7)-1:16*(6)]),
+                         .adc_data7(adc_data[16*(8)-1:16*(7)]),
                          .ddc_phase_inc(ddc_phase_inc),
                          .demix_gain(demix_gain),
                          .demix_phase_inc(demix_phase_inc),
