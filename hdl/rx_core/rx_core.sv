@@ -34,9 +34,9 @@ module rx_core
      input [8-1:0] gain_duc2,
      input [8-1:0] gain_duc3,
      input [8-1:0] gain_duc1,
-     output [16*NUMBER_OF_LINE-1:0] dac1_data,
-     output [16*NUMBER_OF_LINE-1:0] dac2_data,
-     output [16*NUMBER_OF_LINE-1:0] dac3_data
+     output logic [16*NUMBER_OF_LINE-1:0] dac1_data,
+     output logic [16*NUMBER_OF_LINE-1:0] dac2_data,
+     output logic [16*NUMBER_OF_LINE-1:0] dac3_data
    );
 
   genvar i;
@@ -112,7 +112,7 @@ module rx_core
                          .data_im5_duc3(),
                          .data_im6_duc3(),
                          .data_im7_duc3(),
-                         .data_im8_duc3(),
+                         .data_im8_duc3()
                        );
 
   generate
