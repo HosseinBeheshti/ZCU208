@@ -115,11 +115,16 @@ module rx_core
                          .data_im8_duc3(),
                        );
 
-  always @(posedge clock)
-  begin
-    dac1_data[16*(i+1)-1:16*i] <= dac1_data_re_array[i];
-    dac2_data[16*(i+1)-1:16*i] <= dac2_data_re_array[i];
-    dac3_data[16*(i+1)-1:16*i] <= dac3_data_re_array[i];
-  end
+  generate
+    for (i = 0; i < NUMBER_OF_LINE; i = i + 1)
+    begin
+      always @(posedge clock)
+      begin
+        dac1_data[16*(i+1)-1:16*i] <= dac1_data_re_array[i];
+        dac2_data[16*(i+1)-1:16*i] <= dac2_data_re_array[i];
+        dac3_data[16*(i+1)-1:16*i] <= dac3_data_re_array[i];
+      end
+    end
+  endgenerate
 
 endmodule
