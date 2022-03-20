@@ -10,16 +10,15 @@ function coef_out = lpf4
 % All frequency values are in MHz.
 Fs = 4000;  % Sampling Frequency
 
-Fpass = 20;              % Passband Frequency
-Fstop = 250;             % Stopband Frequency
-Dpass = 0.057501127785;  % Passband Ripple
-Dstop = 0.0001;          % Stopband Attenuation
-dens  = 20;              % Density Factor
-
-% Calculate the order from the parameters using FIRPMORD.
-[N, Fo, Ao, W] = firpmord([Fpass, Fstop]/(Fs/2), [1 0], [Dpass, Dstop]);
+N     = 111;  % Order
+Fpass = 100;  % Passband Frequency
+Fstop = 250;  % Stopband Frequency
+Wpass = 1;    % Passband Weight
+Wstop = 1;    % Stopband Weight
+dens  = 20;   % Density Factor
 
 % Calculate the coefficients using the FIRPM function.
-coef_out  = firpm(N, Fo, Ao, W, {dens});
+coef_out  = firpm(N, [0 Fpass Fstop Fs/2]/(Fs/2), [1 1 0 0], [Wpass Wstop], ...
+           {dens});
 
 % [EOF]

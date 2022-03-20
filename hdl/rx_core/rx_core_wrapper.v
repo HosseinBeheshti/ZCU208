@@ -19,31 +19,36 @@
 
 module rx_core_wrapper
   (
+
     input clock,
-    input resetn,
-    input [4:0] output_select,
-    input [15:0] compelex_phase_inc,
-    input [15:0] real_phase_inc,
-    input [15:0] duc1_phase_inc,
-    input [15:0] duc2_phase_inc,
-    input [15:0] duc3_phase_inc,
-    input [127:0] adc_data,
-    output [127:0] dac1_data,
-    output [127:0] dac2_data,
-    output [127:0] dac3_data
+    input clock_down4,
+    input [16*8-1:0] adc_data,
+    input [16-1:0] ddc_phase_inc,
+    input [16-1:0] demix_gain,
+    input [16-1:0] demix_phase_inc,
+    input [16-1:0] duc_phase_inc,
+    input [8-1:0] gain_duc1,
+    input [8-1:0] gain_duc2,
+    input [8-1:0] gain_duc3,
+    output [16*8-1:0] dac1_data,
+    output [16*8-1:0] dac2_data,
+    output [16*8-1:0] dac3_data
   );
 
   rx_core rx_core_inst
           (
             .clock(clock),
-            .resetn(resetn),
-            .output_select(output_select),
-            .compelex_phase_inc(compelex_phase_inc),
-            .real_phase_inc(real_phase_inc),
-            .duc1_phase_inc(duc1_phase_inc),
-            .duc2_phase_inc(duc2_phase_inc),
-            .duc3_phase_inc(duc3_phase_inc),
+            .clock_down4(clock_down4),
             .adc_data(adc_data),
+            .ddc_phase_inc(ddc_phase_inc),
+            .demix_gain(demix_gain),
+            .demix_phase_inc(demix_phase_inc),
+            .duc1_phase_inc(duc_phase_inc),
+            .duc2_phase_inc(duc_phase_inc),
+            .duc3_phase_inc(duc_phase_inc),
+            .gain_duc1(gain_duc1),
+            .gain_duc2(gain_duc2),
+            .gain_duc3(gain_duc3),
             .dac1_data(dac1_data),
             .dac2_data(dac2_data),
             .dac3_data(dac3_data)

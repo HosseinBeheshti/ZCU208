@@ -10,8 +10,8 @@ function coef_out = lpf2
 % All frequency values are in MHz.
 Fs = 125;  % Sampling Frequency
 
-Fpass = 10;              % Passband Frequency
-Fstop = 15;              % Stopband Frequency
+Fpass = 7;              % Passband Frequency
+Fstop = 10;              % Stopband Frequency
 Dpass = 0.057501127785;  % Passband Ripple
 Dstop = 0.0001;          % Stopband Attenuation
 dens  = 20;              % Density Factor
