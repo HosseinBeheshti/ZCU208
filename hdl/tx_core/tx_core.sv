@@ -26,9 +26,11 @@ module tx_core
      input [7:0] mixer_gain,
      input [15:0] lo_dds_phase_inc,
      input enable_pre_distortion,
+     input [3:0] scale_select,
      input [16*NUMBER_OF_LINE-1:0] adc1_data,
      input [16*NUMBER_OF_LINE-1:0] adc2_data,
      input [16*NUMBER_OF_LINE-1:0] adc3_data,
+     output [16-1:0] interval_max,
      output logic [16*NUMBER_OF_LINE-1:0] dac_data
    );
 
@@ -61,6 +63,8 @@ module tx_core
                          .mixer_gain(mixer_gain),
                          .dds_phase_inc(lo_dds_phase_inc),
                          .enable_pre_distortion(enable_pre_distortion),
+                         .scale_select(scale_select),
+                         .interval_max(interval_max),
                          .dac_data0(dac_data[16*1-1:16*0]),
                          .dac_data1(dac_data[16*2-1:16*1]),
                          .dac_data2(dac_data[16*3-1:16*2]),
