@@ -15,6 +15,12 @@ workspace_adc = [t_ws' adc_data];
 dac_data = reshape(dac_data_array',1,[])';
 %% bit width
 adc_width = 16;
-arcsine_rom_value = asin(0:1/2^(adc_width-1):1)./asin(1);
 dds_phase_width = 16;
 dds_data_width = 16;
+dds_cm_width = 33;
+dds_convert_width = 16;
+dds_convert_point = 15;
+arcsine_rom_value = asin(0:1/2^(adc_width-1):1)./asin(1);
+%% Hilbert transform
+hilbert_convert_width = 16;
+hilbert_convert_point = 15;
