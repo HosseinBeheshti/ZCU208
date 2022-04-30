@@ -60,6 +60,7 @@ module tx_core
                          .adc3_data6(adc3_data[16*7-1:16*6]),
                          .adc3_data7(adc3_data[16*8-1:16*7]),
                          .clk(clock),
+						 .mixer_gain(mixer_gain),
 						 .hilbert_asr_delay(42),
 						 .hilbert_mux_select(0),
                          .dds_phase_inc(lo_dds_phase_inc),
