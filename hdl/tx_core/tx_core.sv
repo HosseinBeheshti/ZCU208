@@ -30,7 +30,6 @@ module tx_core
      input [16*NUMBER_OF_LINE-1:0] adc1_data,
      input [16*NUMBER_OF_LINE-1:0] adc2_data,
      input [16*NUMBER_OF_LINE-1:0] adc3_data,
-     output [16-1:0] interval_max,
      output logic [16*NUMBER_OF_LINE-1:0] dac_data
    );
 
