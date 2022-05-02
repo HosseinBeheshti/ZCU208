@@ -30,7 +30,6 @@ module tx_core
      input [16*NUMBER_OF_LINE-1:0] adc1_data,
      input [16*NUMBER_OF_LINE-1:0] adc2_data,
      input [16*NUMBER_OF_LINE-1:0] adc3_data,
-     output [16-1:0] interval_max,
      output logic [16*NUMBER_OF_LINE-1:0] dac_data
    );
 
@@ -60,6 +59,7 @@ module tx_core
                          .adc3_data6(adc3_data[16*7-1:16*6]),
                          .adc3_data7(adc3_data[16*8-1:16*7]),
                          .clk(clock),
+						 .mixer_gain(mixer_gain),
 						 .hilbert_asr_delay(42),
 						 .hilbert_mux_select(0),
                          .dds_phase_inc(lo_dds_phase_inc),

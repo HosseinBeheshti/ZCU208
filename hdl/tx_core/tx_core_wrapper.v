@@ -28,7 +28,6 @@ module tx_core_wrapper
     input [127:0] adc1_data,
     input [127:0] adc2_data,
     input [127:0] adc3_data,
-    output [16-1:0] interval_max,
     output [127:0] dac_data
   );
 
@@ -42,7 +41,6 @@ module tx_core_wrapper
             .adc1_data(adc1_data),
             .adc2_data(adc2_data),
             .adc3_data(adc3_data),
-            .interval_max(interval_max),
             .dac_data(dac_data)
           );
 
